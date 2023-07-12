@@ -9,17 +9,28 @@ body {
   font-family: sans-serif;
 }
 
+a {
+  text-decoration: none !important;
+}
+
+.header-div a {
+  color: #fee2c5 !important;
+}
+
+.body-div a {
+  color: black !important;
+}
+
 .header-div {
   margin: 0;
   color: #fee2c5;
-  fill: #fee2c5;
   text-align: center;
   align-items: center;
   background-color: #001d6e;
   padding: 60px 25% 0 25%;
 }
 
-.vcard-head {
+.vcard-header {
   text-align: center;
   align-items: center;
   box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.2);
@@ -54,14 +65,14 @@ h6 {
   width: 100%;
   text-align: center;
   height: 60px;
-  border-top: 1px solid rgba(255,255,255,0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .mbtn {
   text-decoration: none;
   cursor: pointer;
-  color: #FEE2C5;
-  fill: #FEE2C5;
+  color: #fee2c5;
+  fill: #fee2c5;
   padding: 15px 0;
   align-items: center;
   text-align: center;
@@ -73,6 +84,54 @@ h6 {
   padding: 10px;
 }
 
+.body-div {
+  margin: 0;
+  text-align: center;
+  align-items: center;
+  padding: 0 25% 0 25%;
+  height: 100%;
+}
+
+.vcard-body {
+  height: 100%;
+  position: relative;
+  float: left;
+  width: 100%;
+  padding: 20px 45px 40px;
+  box-shadow: 0 -5px 40px 7px rgba(0, 0, 0, 0.08);
+}
+
+table th,
+table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table-row-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  position: relative;
+  padding: 20px 0 20px 65px;
+  float: left;
+  width: 100%;
+  text-align: left;
+}
+
+.table-row svg {
+  position: absolute;
+  top: 25px;
+  left: 20px;
+  font-size: 20px;
+  fill: #b3b4bb;
+}
+
+.table-row-content small {
+  margin-bottom: 5px;
+}
 
 
 /* #C4DDFF */
