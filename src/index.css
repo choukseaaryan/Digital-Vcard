@@ -22,6 +22,27 @@ a {
 }
 
 
+@media (max-width:768px) {
+  .header-div {
+    padding: 0 !important;
+  }
+
+  .body-div {
+    padding: 0 !important;
+  }
+
+  .dbtn {
+    display: none !important;
+  }
+}
+
+@media (min-width:768px) {
+  .fbtn {
+    display: none !important;
+  }
+}
+
+
 /* #C4DDFF */
 /* #001D6E */
 /* #7FB5FF */

@@ -35,7 +35,27 @@
   text-transform: none !important;
 }
 
-.dbtn:hover {
+.dbtn:hover,
+.fbtn:hover {
   box-shadow: 0px 20px 28.2px 0.9px rgba(0, 0, 0, 0.24),
     0px 8px 40.18px 0.82px rgba(0, 0, 0, 0.16);
+}
+
+.fbtn {
+  display: none;
+  float: right;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 150px;
+  padding: 10px !important;
+  z-index: 100;
+  border-top-left-radius: 50px !important;
+  border-top-right-radius: 50px !important;
+  border-bottom-left-radius: 50px !important;
+  border-bottom-right-radius: 50px !important;
+  background-color: #001d6e !important;
+  font-size: larger !important;
+  box-shadow: 0px 10px 14.1px 0.9px rgba(0, 0, 0, 0.24),
+    0px 4px 19.6px 0.4px rgba(0, 0, 0, 0.16);
 }
