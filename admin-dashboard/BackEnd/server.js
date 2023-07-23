@@ -4,13 +4,15 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = 3000;
+const port = 3003;
 
-app.use(cors({
-  credentials:true,
-  origin:"http://localhost:3001",
-  methods:["GET", "POST", "PUT","DELETE"],
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3001",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -23,48 +25,79 @@ const pool = mysql.createPool({
   database: "vcard",
 });
 
-
 app.post("/form", (req, res) => {
-  const sql =
+  const insertUsersSql =
     "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, zipcode, position, default_website) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-  pool.query(
-    sql,
-    [
-      req.body.firstName,
-      req.body.lastName,
-      (req.body.address1 + "\n" + req.body.address2),
-      req.body.contact,
-      req.body.email,
-      req.body.employee_id,
-      req.body.city,
-      req.body.zipCode,
-      req.body.position,
-      req.body.website,
-    ],
-    (err, data) => {
-      if (err) {
-        return res.status(500).json("Registration Failed: \n" + err);
-      } else {
-        return res.json("Registration Successfully!");
-      }
-    }
-  );
-  // console.log(req.body);
-  // res.status(200).json({message:"success"});
-    
-});
+  const insertQrCodeSql =
+    "UPDATE qr_code SET qrcode_data = ? WHERE employee_id = ?;";
 
-// app.get("/contacts", (req, res) => {
-//   const sql = "SELECT * FROM users";
-//   db.query(sql, (err, data) => {
-//     if (err) {
-//       return res.json("Can't fetch data: \n", err);
-//     } else {
-//       return res.json(data);
-//     }
-//   });
-// });
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return res.status(500).json("Database Connection Failed: \n" + err);
+    }
+
+    connection.beginTransaction((err) => {
+      if (err) {
+        connection.release();
+        return res.status(500).json("Transaction Failed: \n" + err);
+      }
+
+      connection.query(
+        insertUsersSql,
+        [
+          req.body.firstName,
+          req.body.lastName,
+          req.body.address,
+          req.body.contact,
+          req.body.email,
+          req.body.employee_id,
+          req.body.city,
+          req.body.zipCode,
+          req.body.position,
+          req.body.website,
+        ],
+        (err, userData) => {
+          if (err) {
+            connection.rollback(() => {
+              connection.release();
+              return res.status(500).json("Registration Failed: \n" + err);
+            });
+          } else {
+            connection.query(
+              insertQrCodeSql,
+              [req.body.qrcode_data, req.body.employee_id],
+              (err) => {
+                if (err) {
+                  connection.rollback(() => {
+                    connection.release();
+                    return res
+                      .status(500)
+                      .json("Registration Failed: \n" + err);
+                  });
+                } else {
+                  connection.commit((err) => {
+                    if (err) {
+                      connection.rollback(() => {
+                        connection.release();
+                        return res
+                          .status(500)
+                          .json("Transaction Commit Failed: \n" + err);
+                      });
+                    } else {
+                      connection.release();
+                      return res.json("Registration Successfully!");
+                    }
+                  });
+                }
+              }
+            );
+          }
+        }
+      );
+    });
+  });
+});
 
 // API route to fetch data from the database
 app.get("/api/data/users", (req, res) => {

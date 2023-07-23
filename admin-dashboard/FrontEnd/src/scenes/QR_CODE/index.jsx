@@ -40,7 +40,7 @@ const QR_CODE = () => {
       field: "scans",
       headerName: "Number of Scans",
       flex: 1,
-    },
+    }
   ];
 
   const [data, setData] = useState([]);
@@ -50,7 +50,7 @@ const QR_CODE = () => {
   }, []);
 
   const fetchData = () => {
-    axios.get("http://localhost:3000/api/data/qr_code")
+    axios.get("http://localhost:3003/api/data/qr_code")
       .then((response) => {
         setData(response.data);
       })

@@ -5,7 +5,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
@@ -16,7 +15,7 @@ const QRCodeGenerator = () => {
                     VERSION:3.0
                     N:${values.lastName};${values.firstName};;;
                     FN:${values.firstName} ${values.lastName}
-                    ADR;TYPE=WORK:;;${values.address1} ${values.address2};;;;${values.city};;${values.zipCode};;
+                    ADR;TYPE=WORK:;;${values.address};;;;${values.city};;${values.zipCode};;
                     TEL;TYPE=WORK:${values.contact}
                     EMAIL:${values.email}
                     URL:${values.website}
@@ -34,11 +33,11 @@ const QRCodeGenerator = () => {
   const handleFormSubmit = (values) => {
     axios
       .post(
-        "http://localhost:3000/form",
+        "http://localhost:3003/form",
         {
           firstName: values.firstName,
           lastName: values.lastName,
-          address1: values.address1,
+          address: values.address,
           contact: values.contact,
           email: values.email,
           employee_id: values.employee_id,
@@ -46,6 +45,7 @@ const QRCodeGenerator = () => {
           zipCode: values.zipCode,
           position: values.position,
           website: values.website,
+          qrcode_data: qrCodeData
         },
         {
           headers: {
@@ -61,9 +61,6 @@ const QRCodeGenerator = () => {
         console.error("Error submitting form:", error);
       });
     console.log(values);
-    const notify = () => toast("Wow so easy!");
-    notify();
-    <ToastContainer />
     generateQRCode(values);
   };
 
@@ -87,8 +84,8 @@ const QRCodeGenerator = () => {
       .string()
       .matches(phoneRegExp, "Phone number is not valid")
       .required("Required"),
-    address1: yup.string().required("Required"),
-    address2: yup.string().required("Required"),
+    address: yup.string().required("Required"),
+    employee_id: yup.string().required("Required")
   });
 
   const initialValues = {
@@ -96,8 +93,7 @@ const QRCodeGenerator = () => {
     lastName: "",
     email: "",
     contact: "",
-    address1: "",
-    address2: "",
+    address: "",
     city: "",
     zipCode: "",
     website: "",
@@ -187,13 +183,13 @@ const QRCodeGenerator = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Address"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
+                value={values.address}
+                name="address"
+                error={!!touched.address && !!errors.address}
+                helperText={touched.address && errors.address}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -240,7 +236,7 @@ const QRCodeGenerator = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Employee_ID"
+                label="Employee ID"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.setEmployee_id}

@@ -34,6 +34,11 @@ a {
   .dbtn {
     display: none !important;
   }
+
+  .fbtn {
+    display: block !important;
+    color: #fee2c5 !important;
+  }
 }
 
 @media (min-width:768px) {

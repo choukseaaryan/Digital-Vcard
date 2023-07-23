@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -62,7 +63,7 @@ const Contacts = () => {
   }, []);
 
   const fetchData = () => {
-    axios.get("http://localhost:3000/api/data/users")
+    axios.get("http://localhost:3003/api/data/users")
       .then((response) => {
         setData(response.data);
       })
