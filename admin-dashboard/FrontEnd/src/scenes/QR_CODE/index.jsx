@@ -1,9 +1,11 @@
 import { Box, useTheme } from "@mui/material";
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 const QR_CODE = () => {
   const theme = useTheme();
@@ -40,7 +42,35 @@ const QR_CODE = () => {
       field: "scans",
       headerName: "Number of Scans",
       flex: 1,
-    }
+    },
+    {
+      field: "qrcode_data",
+      headerName: "QR Code Data",
+      width: 0,
+    },
+    {
+      field: "download_qrcode",
+      headerName: "Download QR Code",
+      flex: 1,
+      renderCell: (params) => {
+        const handleDownloadQRCode = () => {
+          const downloadLink = document.createElement("a");
+          downloadLink.href = params.row.qrcode_data;
+          downloadLink.download = `${params.row.employee_id}.png`;
+          downloadLink.click();
+        };
+
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleDownloadQRCode}
+          >
+            <FileDownloadOutlinedIcon />
+          </Button>
+        );
+      },
+    },
   ];
 
   const [data, setData] = useState([]);
@@ -50,7 +80,8 @@ const QR_CODE = () => {
   }, []);
 
   const fetchData = () => {
-    axios.get("http://localhost:3003/api/data/qr_code")
+    axios
+      .get("http://localhost:3003/api/data/qr_code")
       .then((response) => {
         setData(response.data);
       })
@@ -58,7 +89,6 @@ const QR_CODE = () => {
         console.error("Error fetching data:", error);
       });
   };
-
 
   return (
     <Box m="20px">
@@ -92,7 +122,17 @@ const QR_CODE = () => {
           },
         }}
       >
-        <DataGrid rows={data} columns={columns} />
+        <DataGrid
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                qrcode_data: false,
+              },
+            },
+          }}
+          rows={data}
+          columns={columns}
+        />
       </Box>
     </Box>
   );
