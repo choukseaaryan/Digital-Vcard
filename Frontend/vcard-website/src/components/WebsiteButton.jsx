@@ -1,8 +1,8 @@
 import React from "react";
 
-function WebsiteButton() {
+function WebsiteButton(website) {
   return (
-    <a href="https://teleglobals.com/" className="mbtn col-4">
+    <a href={"https://"+website} className="mbtn col-4">
       <svg
         class="icons"
         xmlns="http://www.w3.org/2000/svg"

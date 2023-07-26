@@ -3,18 +3,14 @@ import { useContext } from "react";
 import { ColorModeContext } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import Header from "../../components/Header";
 
 const Topbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
+    <Box display="flex" justifyContent="right" p={2}>
       {/* ICONS */}
-      <Box display="flex">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-      </Box>
 
       <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>

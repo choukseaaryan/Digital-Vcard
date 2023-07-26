@@ -1,8 +1,8 @@
 import React from "react";
 
-function PhoneButton() {
+function PhoneButton({phone}) {
   return (
-    <a href="tel:+91%209513631005" className="mbtn col-4">
+    <a href={"tel:"+phone} className="mbtn col-4">
       <svg
         class="icons"
         xmlns="http://www.w3.org/2000/svg"

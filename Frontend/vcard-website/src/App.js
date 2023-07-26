@@ -1,14 +1,14 @@
-import Header from './components/Header/Header';
-import Body from './components/Body/Body';
-import { Box } from '@mui/material';
+import Header from "./components/Header/Header";
+import Body from "./components/Body/Body";
+import { useParams } from "react-router-dom";
 
-function App() {
+export default function App() {
+  const { empID } = useParams();
+  
   return (
-    <Box>
-      <Header />
-      <Body />
-    </Box>
+    <div className="App">
+      <Header empID={empID} />
+      <Body empID={empID} />
+    </div>
   );
-}
-
-export default App;
+};

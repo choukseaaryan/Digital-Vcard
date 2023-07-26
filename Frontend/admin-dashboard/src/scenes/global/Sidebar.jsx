@@ -86,33 +86,6 @@ const Sidebar = () => {
             )}
           </MenuItem>
 
-          {/* {!isCollapsed && (
-            <Box mb="5px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../assets/user.jpg`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Kamlesh Kumar
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  MD teleGlobal Int Pvt Ltd
-                </Typography>
-              </Box>
-            </Box>
-          )} */}
-
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"

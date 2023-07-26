@@ -7,6 +7,7 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
+import Header from "../../components/Header";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -15,6 +16,9 @@ const Dashboard = () => {
   return (
     <Box m="20px">
       {/* GRID & CHARTS */}
+      <Box display="flex">
+        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+      </Box>
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"

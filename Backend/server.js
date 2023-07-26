@@ -9,7 +9,7 @@ const port = 3003;
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3001",
+    origin: ["http://localhost:3001", "http://localhost:3002"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
@@ -27,7 +27,7 @@ const pool = mysql.createPool({
 
 app.post("/form", (req, res) => {
   const insertUsersSql =
-    "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, zipcode, position, default_website) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, state, zipcode, position, website) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
   const insertQrCodeSql =
     "UPDATE qr_code SET qrcode_data = ? WHERE employee_id = ?;";
@@ -53,6 +53,7 @@ app.post("/form", (req, res) => {
           req.body.email,
           req.body.employee_id,
           req.body.city,
+          req.body.state,
           req.body.zipCode,
           req.body.position,
           req.body.website,
@@ -86,7 +87,7 @@ app.post("/form", (req, res) => {
                       });
                     } else {
                       connection.release();
-                      return res.json("Registration Successfully!");
+                      return res.json("Registration Successful!");
                     }
                   });
                 }

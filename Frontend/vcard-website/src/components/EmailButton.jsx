@@ -1,8 +1,8 @@
 import React from "react";
 
-function EmailButton() {
+function EmailButton({email}) {
   return (
-    <a href="mailto:kamlesh.kumar@teleglobals.com" className="mbtn col-4">
+    <a href={"mailto:"+email} className="mbtn col-4">
       <svg
         class="icons"
         xmlns="http://www.w3.org/2000/svg"

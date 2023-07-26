@@ -15,7 +15,7 @@ const QRCodeGenerator = () => {
 VERSION:3.0
 N:${values.lastName};${values.firstName};;;
 FN:${values.firstName} ${values.lastName}
-ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city};;${values.zipCode};;
+ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
 TEL;TYPE=WORK:${values.contact}
 EMAIL:${values.email}
 URL:${values.website}
@@ -32,6 +32,7 @@ END:VCARD`;
 
   const handleFormSubmit = (values) => {
     generateQRCode(values);
+    while(!qrCodeData){}
     axios
       .post(
         "http://localhost:3003/form",
@@ -43,6 +44,7 @@ END:VCARD`;
           email: values.email,
           employee_id: values.employee_id,
           city: values.city,
+          state: values.state,
           zipCode: values.zipCode,
           position: values.position,
           website: values.website,
@@ -96,6 +98,7 @@ END:VCARD`;
     address1: "",
     address2: "",
     city: "",
+    state: "",
     zipCode: "",
     website: "",
   };
@@ -121,9 +124,9 @@ END:VCARD`;
             <Box
               display="grid"
               gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              gridTemplateColumns="repeat(12, minmax(0, 1fr))"
               sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 12" },
               }}
             >
               <TextField
@@ -137,7 +140,7 @@ END:VCARD`;
                 name="firstName"
                 error={!!touched.firstName && !!errors.firstName}
                 helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth
@@ -150,7 +153,7 @@ END:VCARD`;
                 name="lastName"
                 error={!!touched.lastName && !!errors.lastName}
                 helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth
@@ -163,7 +166,7 @@ END:VCARD`;
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth
@@ -176,33 +179,33 @@ END:VCARD`;
                 name="contact"
                 error={!!touched.contact && !!errors.contact}
                 helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Address Line 1"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.address1}
                 name="address1"
                 error={!!touched.address1 && !!errors.address1}
                 helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 12" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 2"
+                label="Address Line 2"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.address2}
                 name="address2"
                 error={!!touched.address2 && !!errors.address2}
                 helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 12" }}
               />
               <TextField
                 fullWidth
@@ -215,7 +218,20 @@ END:VCARD`;
                 name="city"
                 error={!!touched.city && !!errors.city}
                 helperText={touched.city && errors.city}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="State"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.state}
+                name="state"
+                error={!!touched.state && !!errors.state}
+                helperText={touched.state && errors.state}
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
@@ -228,7 +244,7 @@ END:VCARD`;
                 name="zipCode"
                 error={!!touched.zipCode && !!errors.zipCode}
                 helperText={touched.zipCode && errors.zipCode}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
@@ -241,7 +257,7 @@ END:VCARD`;
                 name="website"
                 error={!!touched.website && !!errors.website}
                 helperText={touched.website && errors.website}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 12" }}
               />
               <TextField
                 fullWidth
@@ -254,7 +270,7 @@ END:VCARD`;
                 name="employee_id"
                 error={!!touched.employee_id && !!errors.employee_id}
                 helperText={touched.employee_id && errors.employee_id}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth
@@ -267,13 +283,15 @@ END:VCARD`;
                 name="position"
                 error={!!touched.position && !!errors.position}
                 helperText={touched.position && errors.position}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 6" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Create New User
-              </Button>
+              <Box mr="10px">
+                <Button type="submit" color="secondary" variant="contained">
+                  Create New User
+                </Button>
+              </Box>
               <Button
                 color="secondary"
                 variant="contained"
