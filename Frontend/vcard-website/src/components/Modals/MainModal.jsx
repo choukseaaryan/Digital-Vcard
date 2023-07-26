@@ -42,7 +42,7 @@ export default function ModalComponent() {
         <DialogTitle>{"Save VCard"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <Button href="https://media.qrtiger.com/vcard/O5AR.vcf" variant="outline">Download Vcard</Button>
+            <Button href="" variant="outline">Download Vcard</Button>
             <EmailModal />
             <Button variant="outline" href="mailto:?subject=Kamlesh Kumar's%20vCard&amp;body=Follow%20this%20link%20to%20download%20Kamlesh Kumar's%20vCard%3A https://media.qrtiger.com/vcard/O5AR.vcf">
               Send from your Email

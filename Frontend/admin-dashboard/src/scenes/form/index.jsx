@@ -6,6 +6,7 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const QRCodeGenerator = () => {
   const [qrCodeData, setQRCodeData] = useState("");
@@ -33,6 +34,7 @@ END:VCARD`;
   const handleFormSubmit = (values) => {
     generateQRCode(values);
     while(!qrCodeData){}
+    toast.success("QR Code Generated Successfully");
     axios
       .post(
         "http://localhost:3003/form",
@@ -62,8 +64,8 @@ END:VCARD`;
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
+        toast.error("Error creating user. Please try again.");
       });
-    console.log(values);
   };
 
   const handleDownloadQRCode = () => {
@@ -105,6 +107,7 @@ END:VCARD`;
 
   return (
     <Box p="20px">
+      <ToastContainer />
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik
@@ -303,7 +306,6 @@ END:VCARD`;
           </form>
         )}
       </Formik>
-      {qrCodeData && <img src={qrCodeData} alt="QR Code" />}
     </Box>
   );
 };
