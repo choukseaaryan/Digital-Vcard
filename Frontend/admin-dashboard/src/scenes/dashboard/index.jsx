@@ -34,7 +34,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
+            title="NA"
             subtitle="Clicks On Email"
             
             icon={
@@ -52,7 +52,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
+            title="NA"
             subtitle="Clicks On Phone"
                         
             icon={
@@ -70,7 +70,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="532,441"
+            title="NA"
             subtitle="Clicks On Website"
         
             icon={
@@ -88,8 +88,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Total Scan"
+            title="NA"
+            subtitle="Total Clicks"
             
             icon={
               <TrafficIcon
@@ -118,7 +118,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Scans Of Users
+                Clicks Of Users
               </Typography>
               <Typography
                 variant="h3"
@@ -145,7 +145,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Number Of Scans
+            Number Of Clicks
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
