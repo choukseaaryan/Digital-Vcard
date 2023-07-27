@@ -17,8 +17,6 @@ function Header({ empID }) {
       .get(`http://localhost:3003/vcard/${empID}`)
       .then((response) => {
         setData(response.data[0]);
-        console.log("Data has been received:");
-        console.log(response.data[0]);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

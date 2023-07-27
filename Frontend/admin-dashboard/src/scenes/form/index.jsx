@@ -1,40 +1,43 @@
-import React, { useState } from "react";
-import QRCode from "qrcode";
+import React from "react";
+// import QRCode from "qrcode";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 
-const QRCodeGenerator = () => {
-  const [qrCodeData, setQRCodeData] = useState("");
+const Form = () => {
+  // const [qrCodeData, setQRCodeData] = useState("");
+  //let qrCodeData = "";
+//   const generateQRCode = async (values) => {
+//     const vcfData = `BEGIN:VCARD
+// VERSION:3.0
+// N:${values.lastName};${values.firstName};;;
+// FN:${values.firstName} ${values.lastName}
+// ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
+// TEL;TYPE=WORK:${values.contact}
+// EMAIL:${values.email}
+// URL:${values.website}
+// END:VCARD`;
 
-  const generateQRCode = (values) => {
-    const vcfData = `BEGIN:VCARD
-VERSION:3.0
-N:${values.lastName};${values.firstName};;;
-FN:${values.firstName} ${values.lastName}
-ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
-TEL;TYPE=WORK:${values.contact}
-EMAIL:${values.email}
-URL:${values.website}
-END:VCARD`;
+//     try {
+//       console.log("Generating QR code...");
+//       const my_qrData = await QRCode.toDataURL(vcfData);
+//       //console.log("QR code generated successfully!");
+//       setQRCodeData(my_qrData);
+//       // setQRCodeData(url);
+//       //console.log("QR code data:", qrCodeData);
+//     } catch (err) {
+//       console.error("Error generating QR code:", err);
+//     }
+//   };
 
-    QRCode.toDataURL(vcfData)
-      .then((url) => {
-        setQRCodeData(url);
-      })
-      .catch((err) => {
-        console.error("Error generating QR code:", err);
-      });
-  };
+  //console.log(qrCodeData);
 
   const handleFormSubmit = (values) => {
-    generateQRCode(values);
-    while(!qrCodeData){}
-    toast.success("QR Code Generated Successfully");
+    
+    // generateQRCode(values);    
     axios
       .post(
         "http://localhost:3003/form",
@@ -50,7 +53,7 @@ END:VCARD`;
           zipCode: values.zipCode,
           position: values.position,
           website: values.website,
-          qrcode_data: qrCodeData,
+          // qrcode_data: qrCodeData,
         },
         {
           headers: {
@@ -60,20 +63,19 @@ END:VCARD`;
         }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log("Form submitted successfully:", response);
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
-        toast.error("Error creating user. Please try again.");
       });
   };
 
-  const handleDownloadQRCode = () => {
-    const downloadLink = document.createElement("a");
-    downloadLink.href = qrCodeData;
-    downloadLink.download = "qrcode.png";
-    downloadLink.click();
-  };
+  // const handleDownloadQRCode = () => {
+  //   const downloadLink = document.createElement("a");
+  //   downloadLink.href = qrCodeData;
+  //   downloadLink.download = "qrcode.png";
+  //   downloadLink.click();
+  // };
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
@@ -107,7 +109,6 @@ END:VCARD`;
 
   return (
     <Box p="20px">
-      <ToastContainer />
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik
@@ -298,7 +299,7 @@ END:VCARD`;
               <Button
                 color="secondary"
                 variant="contained"
-                onClick={handleDownloadQRCode}
+                // onClick={handleDownloadQRCode}
               >
                 Download QR Code
               </Button>
@@ -310,4 +311,4 @@ END:VCARD`;
   );
 };
 
-export default QRCodeGenerator;
+export default Form;

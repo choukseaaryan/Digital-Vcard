@@ -1,5 +1,5 @@
 import { Box, useTheme } from "@mui/material";
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 
 const QR_CODE = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -52,13 +53,23 @@ const QR_CODE = () => {
       headerName: "Download QR Code",
       flex: 1,
       renderCell: (params) => {
-        const handleDownloadQRCode = () => {
-          const downloadLink = document.createElement("a");
-          downloadLink.href = params.row.qrcode_data;
-          downloadLink.download = `${params.row.employee_id}.png`;
-          downloadLink.click();
-        };
+        const handleDownloadQRCode = async () => {
+          try {
+            const qrcodeData = params.row.qrcode_data.replace(/["']/g, "");
+            const response = await fetch(qrcodeData);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
 
+            const downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = `${params.row.employee_id}.png`;
+            downloadLink.click();
+
+            URL.revokeObjectURL(url);
+          } catch (error) {
+            console.error("Error downloading QR code:", error);
+          }
+        };
         return (
           <Button
             variant="contained"
@@ -78,17 +89,21 @@ const QR_CODE = () => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    axios
+  const fetchData = async () => {
+    await axios
       .get("http://localhost:3003/api/data/qr_code")
       .then((response) => {
         setData(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Box m="20px">
       <Header title="QR Details" subtitle="List of QR codes of users" />

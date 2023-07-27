@@ -127,7 +127,7 @@ function Body({ empID }) {
                     </svg>
                     <small style={{ color: "#b3b4bb" }}>Website</small>
                     <a
-                      href="https://teleglobals.com/"
+                      href={"https://"+data.website+"/"}
                       style={{ wordBreak: "break-all" }}
                     >
                       <h5 style={{ fontFamily: "Arial" }}>{data.website}</h5>

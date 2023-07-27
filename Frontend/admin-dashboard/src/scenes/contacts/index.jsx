@@ -1,9 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, useTheme,Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-// import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -53,7 +51,36 @@ const Contacts = () => {
       headerName: "Zip Code",
       flex: 1,
     },
+    {
+      field: "delete",
+      headerName: "",
+      sortable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleDelete(params.row.employee_id)}
+        >
+          Delete User
+        </Button>
+      ),
+    },
   ];
+
+  const handleDelete = (id) => {
+    axios
+      .post(`http://localhost:3003/delete-user/${id}`, {
+        headers: {
+          "Content-type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
+    window.location.reload();
+  };
 
   const [data, setData] = useState([]);
 

@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const QRCode = require("qrcode");
 
 const app = express();
 const port = 3003;
@@ -17,6 +18,28 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const generateQRCode = async (values) => {
+  let qrcode_data = "";
+  const vcfData = `BEGIN:VCARD
+VERSION:3.0
+N:${values.lastName};${values.firstName};;;
+FN:${values.firstName} ${values.lastName}
+ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
+TEL;TYPE=WORK:${values.contact}
+EMAIL:${values.email}
+URL:${values.website}
+END:VCARD`;
+
+  try {
+    console.log("Generating QR code...");
+    qrcode_data = await QRCode.toDataURL(vcfData);
+    console.log("QR code data generated successfully!");
+  } catch (err) {
+    console.error("Error generating QR code:", err);
+  }
+  return qrcode_data;
+};
+
 // Create a MySQL connection pool
 const pool = mysql.createPool({
   host: "localhost",
@@ -25,18 +48,18 @@ const pool = mysql.createPool({
   database: "vcard",
 });
 
-app.post("/form", (req, res) => {
+app.post("/form", async (req, res) => {
+  const qrcode_data = await generateQRCode(req.body);
   const insertUsersSql =
     "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, state, zipcode, position, website) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
   const insertQrCodeSql =
-    "UPDATE qr_code SET qrcode_data = ? WHERE employee_id = ?;";
+    "UPDATE qr_code SET qrcode_data = \"?\" WHERE employee_id = ?;";
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json("Database Connection Failed: \n" + err);
     }
-
     connection.beginTransaction((err) => {
       if (err) {
         connection.release();
@@ -67,7 +90,7 @@ app.post("/form", (req, res) => {
           } else {
             connection.query(
               insertQrCodeSql,
-              [req.body.qrcode_data, req.body.employee_id],
+              [qrcode_data, req.body.employee_id],
               (err) => {
                 if (err) {
                   connection.rollback(() => {
@@ -137,7 +160,29 @@ app.get("/vcard/:employee_id", (req, res) => {
       res.json(results);
     }
   });
-})
+});
+
+app.post("/delete-user/:id", (req, res) => {
+  const id = req.params.id;
+
+  const sqlUser = "DELETE FROM users WHERE employee_id = ?";
+  const sqlQR = "DELETE FROM qr_code WHERE employee_id = ?";
+  pool.query(sqlQR, [id], (error, results) => {
+    if (error) {
+      console.error("Error deleting qrcode data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      pool.query(sqlUser, [id], (error, results) => {
+        if (error) {
+          console.error("Error deleting user data from the database:", error);
+          res.status(500).json({ error: "Internal Server Error" });
+        } else {
+          res.json(results);
+        }
+      });
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
