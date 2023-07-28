@@ -1,8 +1,32 @@
 import React from "react";
+import axios from "axios";
 
-function PhoneButton({phone}) {
+function PhoneButton({ phone, empID }) {
+  const handleLinkClick = (event) => {
+    event.preventDefault();
+
+    axios
+      .post(
+        "http://localhost:3003/clicks/phoneButtonClick",
+        { id: empID },
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log(response.data.message);
+        window.location.href = `tel:${phone}`;
+      })
+      .catch((error) => {
+        console.error("Error updating clicks_phone:", error);
+      });
+  };
+
   return (
-    <a href={"tel:"+phone} className="mbtn col-4">
+    <a href={"tel:" + phone} className="mbtn col-4" onClick={handleLinkClick}>
       <svg
         class="icons"
         xmlns="http://www.w3.org/2000/svg"

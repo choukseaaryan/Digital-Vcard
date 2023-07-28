@@ -1,8 +1,36 @@
 import React from "react";
+import axios from "axios";
 
-function EmailButton({email}) {
+function EmailButton({ email, empID }) {
+  const handleLinkClick = (event) => {
+    event.preventDefault();
+
+    axios
+      .post(
+        "http://localhost:3003/clicks/emailButtonClick",
+        { id: empID },
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log(response.data.message);
+        window.location.href = `mailto:${email}`;
+      })
+      .catch((error) => {
+        console.error("Error updating clicks_email:", error);
+      });
+  };
+
   return (
-    <a href={"mailto:"+email} className="mbtn col-4">
+    <a
+      href={"mailto:" + email}
+      className="mbtn col-4"
+      onClick={handleLinkClick}
+    >
       <svg
         class="icons"
         xmlns="http://www.w3.org/2000/svg"

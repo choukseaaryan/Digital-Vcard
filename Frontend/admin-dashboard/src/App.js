@@ -10,6 +10,8 @@ import Form from "./scenes/form";
 import Line from "./scenes/line";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <div className="app">
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
+            <ToastContainer />
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />

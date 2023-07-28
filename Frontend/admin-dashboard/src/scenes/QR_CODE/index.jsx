@@ -1,11 +1,12 @@
 import { Box, useTheme } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const QR_CODE = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,14 +40,8 @@ const QR_CODE = () => {
       flex: 1,
     },
     {
-      field: "scans",
-      headerName: "Number of Scans",
-      flex: 1,
-    },
-    {
       field: "qrcode_data",
       headerName: "QR Code Data",
-      width: 0,
     },
     {
       field: "download_qrcode",
@@ -66,8 +61,10 @@ const QR_CODE = () => {
             downloadLink.click();
 
             URL.revokeObjectURL(url);
+            toast.success("QR code downloaded successfully!");
           } catch (error) {
             console.error("Error downloading QR code:", error);
+            toast.error("Error downloading QR code. Please try again!");
           }
         };
         return (
@@ -146,6 +143,7 @@ const QR_CODE = () => {
           }}
           rows={data}
           columns={columns}
+          components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>

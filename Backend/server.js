@@ -184,6 +184,48 @@ app.post("/delete-user/:id", (req, res) => {
   });
 });
 
+app.post("/clicks/emailButtonClick", (req, res) => {
+  const empID = req.body.id;
+  const sql = "UPDATE qr_code SET clicks_email = clicks_email + 1 WHERE employee_id = ?";
+
+  pool.query(sql, [empID], (error, results) => {
+    if (error) {
+      console.error("Error updating email click count:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.post("/clicks/phoneButtonClick", (req, res) => {
+  const empID = req.body.id;
+  const sql = "UPDATE qr_code SET clicks_phone = clicks_phone + 1 WHERE employee_id = ?";
+
+  pool.query(sql, [empID], (error, results) => {
+    if (error) {
+      console.error("Error updating email click count:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.post("/clicks/websiteButtonClick", (req, res) => {
+  const empID = req.body.id;
+  const sql = "UPDATE qr_code SET clicks_website = clicks_website + 1 WHERE employee_id = ?";
+
+  pool.query(sql, [empID], (error, results) => {
+    if (error) {
+      console.error("Error updating email click count:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });

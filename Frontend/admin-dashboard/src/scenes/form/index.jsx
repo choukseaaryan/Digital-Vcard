@@ -6,39 +6,11 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Form = () => {
-  // const [qrCodeData, setQRCodeData] = useState("");
-  //let qrCodeData = "";
-//   const generateQRCode = async (values) => {
-//     const vcfData = `BEGIN:VCARD
-// VERSION:3.0
-// N:${values.lastName};${values.firstName};;;
-// FN:${values.firstName} ${values.lastName}
-// ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
-// TEL;TYPE=WORK:${values.contact}
-// EMAIL:${values.email}
-// URL:${values.website}
-// END:VCARD`;
-
-//     try {
-//       console.log("Generating QR code...");
-//       const my_qrData = await QRCode.toDataURL(vcfData);
-//       //console.log("QR code generated successfully!");
-//       setQRCodeData(my_qrData);
-//       // setQRCodeData(url);
-//       //console.log("QR code data:", qrCodeData);
-//     } catch (err) {
-//       console.error("Error generating QR code:", err);
-//     }
-//   };
-
-  //console.log(qrCodeData);
-
   const handleFormSubmit = (values) => {
-    
-    // generateQRCode(values);    
-    axios
+        axios
       .post(
         "http://localhost:3003/form",
         {
@@ -53,7 +25,6 @@ const Form = () => {
           zipCode: values.zipCode,
           position: values.position,
           website: values.website,
-          // qrcode_data: qrCodeData,
         },
         {
           headers: {
@@ -64,18 +35,13 @@ const Form = () => {
       )
       .then((response) => {
         console.log("Form submitted successfully:", response);
+        toast.success("User has been created successfully!");
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
+        toast.error("Error creating user. Please try again!");
       });
   };
-
-  // const handleDownloadQRCode = () => {
-  //   const downloadLink = document.createElement("a");
-  //   downloadLink.href = qrCodeData;
-  //   downloadLink.download = "qrcode.png";
-  //   downloadLink.click();
-  // };
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
@@ -299,7 +265,6 @@ const Form = () => {
               <Button
                 color="secondary"
                 variant="contained"
-                // onClick={handleDownloadQRCode}
               >
                 Download QR Code
               </Button>

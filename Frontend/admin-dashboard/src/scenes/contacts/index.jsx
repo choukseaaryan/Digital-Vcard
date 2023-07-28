@@ -4,6 +4,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 
 const Contacts = () => {
@@ -76,8 +77,12 @@ const Contacts = () => {
         },
         withCredentials: true,
       })
+      .then((response) => {
+        toast.success("User has been deleted!");
+      })
       .catch((error) => {
         console.error("Error deleting user:", error);
+        toast.error("Error deleting user. Please try again!");
       });
     window.location.reload();
   };
