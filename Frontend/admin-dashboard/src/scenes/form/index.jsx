@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 // import QRCode from "qrcode";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
@@ -9,30 +9,38 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Form = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+    console.log("Image was saved successfully: ", file);
+  };
+
+
   const handleFormSubmit = (values) => {
-        axios
-      .post(
-        "http://localhost:3003/form",
-        {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          address: values.address1,
-          contact: values.contact,
-          email: values.email,
-          employee_id: values.employee_id,
-          city: values.city,
-          state: values.state,
-          zipCode: values.zipCode,
-          position: values.position,
-          website: values.website,
+    const formData = new FormData();
+    formData.append("firstName", values.firstName);
+    formData.append("lastName", values.lastName);
+    formData.append("email", values.email);
+    formData.append("contact", values.contact);
+    formData.append("address1", values.address1);
+    formData.append("address2", values.address2);
+    formData.append("city", values.city);
+    formData.append("state", values.state);
+    formData.append("zipCode", values.zipCode);
+    formData.append("position", values.position);
+    formData.append("website", values.website);
+    formData.append("employee_id", values.employee_id);
+    formData.append("image", selectedImage);
+
+    axios
+      .post(`http://localhost:3003/form/${values.employee_id}`, formData, {
+        headers: {
+          "Content-type": "multipart/form-data", // Important to set the correct content type
         },
-        {
-          headers: {
-            "Content-type": "application/json",
-          },
-          withCredentials: true,
-        }
-      )
+        withCredentials: true,
+      })
       .then((response) => {
         console.log("Form submitted successfully:", response);
         toast.success("User has been created successfully!");
@@ -255,6 +263,18 @@ const Form = () => {
                 helperText={touched.position && errors.position}
                 sx={{ gridColumn: "span 6" }}
               />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+                id="image-upload-input"
+              />
+              <label htmlFor="image-upload-input">
+                <Button component="span" color="secondary" variant="contained">
+                  Upload Image
+                </Button>
+              </label>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Box mr="10px">
@@ -262,10 +282,7 @@ const Form = () => {
                   Create New User
                 </Button>
               </Box>
-              <Button
-                color="secondary"
-                variant="contained"
-              >
+              <Button color="secondary" variant="contained">
                 Download QR Code
               </Button>
             </Box>

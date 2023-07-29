@@ -3,6 +3,10 @@ const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const QRCode = require("qrcode");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 
 const app = express();
 const port = 3003;
@@ -15,8 +19,22 @@ app.use(
   })
 );
 
+app.use("/profiles", express.static(path.join(__dirname, "profiles")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Define the destination directory for uploaded files
+    cb(null, path.join(__dirname, "profiles"));
+  },
+  filename: function (req, file, cb) {
+    // Define the filename for uploaded files
+    cb(null, `${req.params.empID}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const generateQRCode = async (values) => {
   let qrcode_data = "";
@@ -24,9 +42,9 @@ const generateQRCode = async (values) => {
 VERSION:3.0
 N:${values.lastName};${values.firstName};;;
 FN:${values.firstName} ${values.lastName}
-ADR;TYPE=WORK,PREF:;;${values.address1} ${values.address2};;;;${values.city},${values.state};;${values.zipCode};;
+ADR;TYPE=WORK:;;${values.address1} ${values.address2};${values.city};${values.state};${values.zipCode};;
 TEL;TYPE=WORK:${values.contact}
-EMAIL:${values.email}
+EMAIL;TYPE=WORK:${values.email}
 URL:${values.website}
 END:VCARD`;
 
@@ -48,7 +66,7 @@ const pool = mysql.createPool({
   database: "vcard",
 });
 
-app.post("/form", async (req, res) => {
+app.post("/form/:empID", upload.single("image"), async (req, res) => {
   const qrcode_data = await generateQRCode(req.body);
   const insertUsersSql =
     "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, state, zipcode, position, website) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -71,7 +89,7 @@ app.post("/form", async (req, res) => {
         [
           req.body.firstName,
           req.body.lastName,
-          req.body.address,
+          `${req.body.address1}, ${req.body.address2}`,
           req.body.contact,
           req.body.email,
           req.body.employee_id,
@@ -165,6 +183,7 @@ app.get("/vcard/:employee_id", (req, res) => {
 app.post("/delete-user/:id", (req, res) => {
   const id = req.params.id;
 
+  const filePath = path.join(path.join(__dirname, "profiles"), id);
   const sqlUser = "DELETE FROM users WHERE employee_id = ?";
   const sqlQR = "DELETE FROM qr_code WHERE employee_id = ?";
   pool.query(sqlQR, [id], (error, results) => {
@@ -182,6 +201,15 @@ app.post("/delete-user/:id", (req, res) => {
       });
     }
   });
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting image file:", err);
+    } else {
+      console.log("Image file deleted successfully!");
+    }
+  });
+
 });
 
 app.post("/clicks/emailButtonClick", (req, res) => {

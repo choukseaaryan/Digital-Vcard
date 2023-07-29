@@ -28,10 +28,10 @@ function Header({ empID }) {
       <div className="header-div">
         <div className="vcard-header">
           <div className="img-wrap">
-            {/* <img
-              src=""
+            <img
+              src={`http://localhost:3003/profiles/${empID}`}
               alt="Profile"
-            /> */}
+            />
           </div>
           <div className="title">
             <h2>{data.first_name} {data.last_name}</h2>

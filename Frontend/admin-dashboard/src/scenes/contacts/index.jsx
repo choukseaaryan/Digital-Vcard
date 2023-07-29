@@ -61,7 +61,12 @@ const Contacts = () => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => handleDelete(params.row.employee_id)}
+          onClick={() => {
+            const confirmed = window.confirm("Are you sure you want to delete this user?");
+            if (confirmed) {
+              handleDelete(params.row.employee_id);
+            }
+          }}
         >
           Delete User
         </Button>
@@ -84,7 +89,7 @@ const Contacts = () => {
         console.error("Error deleting user:", error);
         toast.error("Error deleting user. Please try again!");
       });
-    window.location.reload();
+      setData((prevData) => prevData.filter((user) => user.employee_id !== id));
   };
 
   const [data, setData] = useState([]);
