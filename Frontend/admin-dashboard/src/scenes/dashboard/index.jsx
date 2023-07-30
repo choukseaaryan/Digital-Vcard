@@ -8,10 +8,22 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import Header from "../../components/Header";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [clickCounts, setClickCounts] = useState({});
+
+  useEffect(() => {
+    axios.get("http://localhost:3003/clicks/totalClicks").then((res) => {
+      setClickCounts(res.data[0]);
+    })
+    .catch((err) => {
+      console.log("Error fetching click counts: " + err);
+    });
+  }, []);
 
   return (
     <Box m="20px">
@@ -34,7 +46,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="NA"
+            title={clickCounts.total_clicks_email}
             subtitle="Clicks On Email"
             
             icon={
@@ -52,7 +64,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="NA"
+            title={clickCounts.total_clicks_phone}
             subtitle="Clicks On Phone"
                         
             icon={
@@ -70,7 +82,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="NA"
+            title={clickCounts.total_clicks_website}
             subtitle="Clicks On Website"
         
             icon={
@@ -88,7 +100,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="NA"
+            title={clickCounts.total_clicks}
             subtitle="Total Clicks"
             
             icon={

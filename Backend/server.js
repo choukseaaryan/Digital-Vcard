@@ -254,6 +254,18 @@ app.post("/clicks/websiteButtonClick", (req, res) => {
   });
 });
 
+app.get("/clicks/totalClicks", (req, res) => {
+  const sql = "SELECT total_clicks_email, total_clicks_phone, total_clicks_website, total_clicks_email + total_clicks_phone + total_clicks_website AS total_clicks FROM ( SELECT SUM(clicks_email) AS total_clicks_email, SUM(clicks_phone) AS total_clicks_phone, SUM(clicks_website) AS total_clicks_website FROM qr_code) AS subquery;";
+  pool.query(sql, (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });

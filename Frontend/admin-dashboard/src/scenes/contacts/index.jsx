@@ -10,15 +10,19 @@ import { toast } from "react-toastify";
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
+  function renderFullName(params) {
+    return `${params.row.first_name} ${params.row.last_name}`;
+  }  
 
   const columns = [
     { field: "employee_id", headerName: "Employee ID" },
     {
-      field: "first_name",
+      field: "name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: renderFullName,
     },
     {
       field: "position",

@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-// import QRCode from "qrcode";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -7,16 +6,20 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../../theme";
 
 const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
     console.log("Image was saved successfully: ", file);
   };
-
 
   const handleFormSubmit = (values) => {
     const formData = new FormData();
@@ -263,18 +266,45 @@ const Form = () => {
                 helperText={touched.position && errors.position}
                 sx={{ gridColumn: "span 6" }}
               />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                style={{ display: "none" }}
-                id="image-upload-input"
-              />
-              <label htmlFor="image-upload-input">
-                <Button component="span" color="secondary" variant="contained">
-                  Upload Image
-                </Button>
-              </label>
+              <Box gridColumn="span 6" sx={{backgroundColor: colors.primary[400], borderRadius: "10px", p: "10px"}}>
+                <Box display="flex">
+                <Box>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                    id="image-upload-input"
+                  />
+                  <label htmlFor="image-upload-input">
+                    <Button
+                      component="span"
+                      color="secondary"
+                      variant="contained"
+                      sx={{
+                        height: "100%",
+                      }}
+                    >
+                      Upload Profile Image
+                    </Button>
+                  </label>
+                </Box>
+                <Box>
+                  {selectedImage && (
+                    <Box
+                      gridColumn="span 4"
+                      sx={{
+                        pl: "10px",
+                      }}
+                    >
+                      <Typography variant="body1" color="textSecondary">
+                        Selected Image: {selectedImage.name}
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+                </Box>
+              </Box>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Box mr="10px">
