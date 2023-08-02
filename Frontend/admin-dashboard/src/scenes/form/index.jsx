@@ -266,55 +266,61 @@ const Form = () => {
                 helperText={touched.position && errors.position}
                 sx={{ gridColumn: "span 6" }}
               />
-              <Box gridColumn="span 6" sx={{backgroundColor: colors.primary[400], borderRadius: "10px", p: "10px"}}>
+              <Box
+                gridColumn="span 6"
+                sx={{
+                  backgroundColor: colors.primary[400],
+                  borderRadius: "10px",
+                  p: "10px",
+                }}
+              >
                 <Box display="flex">
-                <Box>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: "none" }}
-                    id="image-upload-input"
-                  />
-                  <label htmlFor="image-upload-input">
-                    <Button
-                      component="span"
-                      color="secondary"
-                      variant="contained"
-                      sx={{
-                        height: "100%",
-                      }}
-                    >
-                      Upload Profile Image
+                  <Box>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      style={{ display: "none" }}
+                      id="image-upload-input"
+                    />
+                    <label htmlFor="image-upload-input">
+                      <Button
+                        component="span"
+                        color="secondary"
+                        variant="contained"
+                        sx={{
+                          height: "100%",
+                        }}
+                      >
+                        Upload Profile Image
+                      </Button>
+                    </label>
+                  </Box>
+                  <Box>
+                    {selectedImage && (
+                      <Box
+                        gridColumn="span 4"
+                        sx={{
+                          pl: "10px",
+                        }}
+                      >
+                        <Typography variant="body1" color="textSecondary">
+                          Selected Image: {selectedImage.name}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+              <Box gridColumn="span 6">
+                <Box display="flex" justifyContent="end">
+                  <Box mr="10px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Create New User
                     </Button>
-                  </label>
-                </Box>
-                <Box>
-                  {selectedImage && (
-                    <Box
-                      gridColumn="span 4"
-                      sx={{
-                        pl: "10px",
-                      }}
-                    >
-                      <Typography variant="body1" color="textSecondary">
-                        Selected Image: {selectedImage.name}
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-              <Box mr="10px">
-                <Button type="submit" color="secondary" variant="contained">
-                  Create New User
-                </Button>
-              </Box>
-              <Button color="secondary" variant="contained">
-                Download QR Code
-              </Button>
             </Box>
           </form>
         )}

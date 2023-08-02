@@ -1,11 +1,66 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [emailData, setEmailData] = useState([]);
+  const [phoneData, setPhoneData] = useState([]);
+  const [websiteData, setWebsiteData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios.get("http://localhost:3003/api/data/lineChartData/emailData")
+      .then((response) => {
+        setEmailData(response.data);
+        console.log("Email Data: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Email data:", error);
+      });
+    
+      axios.get("http://localhost:3003/api/data/lineChartData/phoneData")
+      .then((response) => {
+        setPhoneData(response.data);
+        console.log("Phone Data: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Phone data:", error);
+      });
+
+      axios.get("http://localhost:3003/api/data/lineChartData/websiteData")
+      .then((response) => {
+        setWebsiteData(response.data);
+        console.log("Website Data: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Website data:", error);
+      });
+  };
+
+  const data = [
+    {
+      id: "Email",
+      color: tokens("dark").greenAccent[500],
+      data: emailData,
+    },
+    {
+      id: "Phone",
+      color: tokens("dark").blueAccent[300],
+      data: phoneData,
+    },
+    {
+      id: "Website",
+      color: tokens("dark").redAccent[200],
+      data: websiteData,
+    },
+  ];
 
   return (
     <ResponsiveLine
@@ -39,6 +94,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         },
         tooltip: {
           container: {
+            background: colors.grey[800],
             color: colors.primary[500],
           },
         },
@@ -48,7 +104,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
-        min: "auto",
+        min: 0,
         max: "auto",
         stacked: true,
         reverse: false,
@@ -62,7 +118,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        legend: isDashboard ? undefined : "Users", // added
         legendOffset: 36,
         legendPosition: "middle",
       }}
@@ -72,7 +128,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: isDashboard ? undefined : "Clicks", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

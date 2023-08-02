@@ -1,11 +1,28 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
+// import { mockBarData as data } from "../data/mockData";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const BarChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios.get("http://localhost:3003/api/data/qr_code")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
   return (
     <ResponsiveBar
@@ -39,8 +56,8 @@ const BarChart = ({ isDashboard = false }) => {
           },
         },
       }}
-      keys={["Total Clicks"]}
-      indexBy="month"
+      keys={["total_clicks"]}
+      indexBy="employee_id"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
@@ -76,7 +93,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "months", // changed
+        legend: isDashboard ? undefined : "Users", // changed
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -84,7 +101,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "clicks", // changed
+        legend: isDashboard ? undefined : "Total Clicks", // changed
         legendPosition: "middle",
         legendOffset: -40,
       }}
@@ -121,7 +138,7 @@ const BarChart = ({ isDashboard = false }) => {
       ]}
       role="application"
       barAriaLabel={function (e) {
-        return e.id + ": " + e.formattedValue + " in month: " + e.indexValue;
+        return e.id + ": " + e.formattedValue + " of user: " + e.indexValue;
       }}
     />
   );

@@ -22,7 +22,16 @@ const Contacts = () => {
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: renderFullName,
+      renderCell: (params) => {
+        return (
+          <div
+            className="scrollable-column"
+            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+          >
+            {renderFullName(params)}
+          </div>
+        );
+      },
     },
     {
       field: "position",
@@ -40,11 +49,31 @@ const Contacts = () => {
       field: "email",
       headerName: "Email",
       flex: 1,
+      renderCell: (params) => {
+        return (
+          <div
+            className="scrollable-column"
+            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+          >
+            {params.value}
+          </div>
+        );
+      },
     },
     {
       field: "address",
       headerName: "Address",
       flex: 1,
+      renderCell: (params) => {
+        return (
+          <div
+            className="scrollable-column"
+            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+          >
+            {params.value}
+          </div>
+        );
+      },
     },
     {
       field: "city",

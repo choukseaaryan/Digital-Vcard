@@ -66,6 +66,93 @@ const pool = mysql.createPool({
   database: "vcard",
 });
 
+// API route to fetch data from the database
+app.get("/api/data/users", (req, res) => {
+  // Execute a query to fetch data from the database
+  pool.query("SELECT * FROM users", (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/data/qr_code", (req, res) => {
+  // Execute a query to fetch data from the database
+  pool.query("SELECT * FROM qr_code", (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/vcard/:employee_id", (req, res) => {
+  const employee_id = req.params.employee_id;
+  const sql = "SELECT * FROM users WHERE employee_id = ?";
+
+  pool.query(sql, [employee_id], (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/clicks/totalClicks", (req, res) => {
+  const sql = "SELECT total_clicks_email, total_clicks_phone, total_clicks_website, total_clicks_email + total_clicks_phone + total_clicks_website AS total_clicks FROM ( SELECT SUM(clicks_email) AS total_clicks_email, SUM(clicks_phone) AS total_clicks_phone, SUM(clicks_website) AS total_clicks_website FROM qr_code) AS subquery;";
+  pool.query(sql, (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/data/lineChartData/emailData", (req, res) => {
+  const sql = "SELECT employee_id as x, clicks_email as y FROM qr_code";
+  pool.query(sql, (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/data/lineChartData/phoneData", (req, res) => {
+  const sql = "SELECT employee_id as x, clicks_phone as y FROM qr_code";
+  pool.query(sql, (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/data/lineChartData/websiteData", (req, res) => {
+  const sql = "SELECT employee_id as x, clicks_website as y FROM qr_code";
+  pool.query(sql, (error, results) => {
+    if (error) {
+      console.error("Error fetching data from the database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.post("/form/:empID", upload.single("image"), async (req, res) => {
   const qrcode_data = await generateQRCode(req.body);
   const insertUsersSql =
@@ -141,45 +228,6 @@ app.post("/form/:empID", upload.single("image"), async (req, res) => {
   });
 });
 
-// API route to fetch data from the database
-app.get("/api/data/users", (req, res) => {
-  // Execute a query to fetch data from the database
-  pool.query("SELECT * FROM users", (error, results) => {
-    if (error) {
-      console.error("Error fetching data from the database:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.get("/api/data/qr_code", (req, res) => {
-  // Execute a query to fetch data from the database
-  pool.query("SELECT * FROM qr_code", (error, results) => {
-    if (error) {
-      console.error("Error fetching data from the database:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.get("/vcard/:employee_id", (req, res) => {
-  const employee_id = req.params.employee_id;
-  const sql = "SELECT * FROM users WHERE employee_id = ?";
-
-  pool.query(sql, [employee_id], (error, results) => {
-    if (error) {
-      console.error("Error fetching data from the database:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
 app.post("/delete-user/:id", (req, res) => {
   const id = req.params.id;
 
@@ -214,7 +262,7 @@ app.post("/delete-user/:id", (req, res) => {
 
 app.post("/clicks/emailButtonClick", (req, res) => {
   const empID = req.body.id;
-  const sql = "UPDATE qr_code SET clicks_email = clicks_email + 1 WHERE employee_id = ?";
+  const sql = "UPDATE qr_code SET clicks_email = clicks_email + 1, total_clicks = total_clicks + 1 WHERE employee_id = ?";
 
   pool.query(sql, [empID], (error, results) => {
     if (error) {
@@ -228,7 +276,7 @@ app.post("/clicks/emailButtonClick", (req, res) => {
 
 app.post("/clicks/phoneButtonClick", (req, res) => {
   const empID = req.body.id;
-  const sql = "UPDATE qr_code SET clicks_phone = clicks_phone + 1 WHERE employee_id = ?";
+  const sql = "UPDATE qr_code SET clicks_phone = clicks_phone + 1, total_clicks = total_clicks + 1 WHERE employee_id = ?";
 
   pool.query(sql, [empID], (error, results) => {
     if (error) {
@@ -242,23 +290,11 @@ app.post("/clicks/phoneButtonClick", (req, res) => {
 
 app.post("/clicks/websiteButtonClick", (req, res) => {
   const empID = req.body.id;
-  const sql = "UPDATE qr_code SET clicks_website = clicks_website + 1 WHERE employee_id = ?";
+  const sql = "UPDATE qr_code SET clicks_website = clicks_website + 1, total_clicks = total_clicks + 1 WHERE employee_id = ?";
 
   pool.query(sql, [empID], (error, results) => {
     if (error) {
       console.error("Error updating email click count:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.get("/clicks/totalClicks", (req, res) => {
-  const sql = "SELECT total_clicks_email, total_clicks_phone, total_clicks_website, total_clicks_email + total_clicks_phone + total_clicks_website AS total_clicks FROM ( SELECT SUM(clicks_email) AS total_clicks_email, SUM(clicks_phone) AS total_clicks_phone, SUM(clicks_website) AS total_clicks_website FROM qr_code) AS subquery;";
-  pool.query(sql, (error, results) => {
-    if (error) {
-      console.error("Error fetching data from the database:", error);
       res.status(500).json({ error: "Internal Server Error" });
     } else {
       res.json(results);

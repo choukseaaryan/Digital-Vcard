@@ -44,10 +44,11 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx = {{borderRadius: "5px"}}
         >
           <StatBox
-            title={clickCounts.total_clicks_email}
-            subtitle="Clicks On Email"
+            title={clickCounts.total_clicks_phone}
+            subtitle="Clicks On Phone"
             
             icon={
               <EmailIcon
@@ -62,10 +63,11 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx = {{borderRadius: "5px"}}
         >
           <StatBox
-            title={clickCounts.total_clicks_phone}
-            subtitle="Clicks On Phone"
+            title={clickCounts.total_clicks_email}
+            subtitle="Clicks On Email"
                         
             icon={
               <PointOfSaleIcon
@@ -80,6 +82,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx = {{borderRadius: "5px"}}
         >
           <StatBox
             title={clickCounts.total_clicks_website}
@@ -98,6 +101,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx = {{borderRadius: "5px"}}
         >
           <StatBox
             title={clickCounts.total_clicks}
@@ -116,6 +120,7 @@ const Dashboard = () => {
           gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          sx = {{borderRadius: "5px"}}
         >
           <Box
             mt="25px"
@@ -130,7 +135,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Clicks Of Users
+                Clicks on Each User
               </Typography>
               <Typography
                 variant="h3"
@@ -151,13 +156,14 @@ const Dashboard = () => {
           gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          sx = {{borderRadius: "5px"}}
         >
           <Typography
             variant="h5"
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Number Of Clicks
+            Total Number Of Clicks
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
