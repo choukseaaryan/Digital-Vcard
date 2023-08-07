@@ -16,12 +16,13 @@ body,
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px !important;
+  height: 5px !important;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #e0e0e0;
+  background: none !important;
 }
 
 /* Handle */
