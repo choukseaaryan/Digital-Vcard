@@ -107,7 +107,9 @@ function Body({ empID }) {
                     <h5>
                       {data.address}
                       <br></br>
-                      {data.city} {data.zipcode}
+                      {data.city}
+                      <br></br>
+                      {data.state} {data.zipcode}
                     </h5>
                   </div>
                 </th>
@@ -137,7 +139,7 @@ function Body({ empID }) {
               </tr>
             </tbody>
           </table>
-          <MainModal />
+          <MainModal data={data} />
         </div>
       </div>
     );

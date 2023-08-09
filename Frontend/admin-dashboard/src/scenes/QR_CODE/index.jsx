@@ -50,14 +50,16 @@ const QR_CODE = () => {
       renderCell: (params) => {
         const handleDownloadQRCode = async () => {
           try {
-            const qrcodeData = params.row.qrcode_data.replace(/["']/g, "");
-            const response = await fetch(qrcodeData);
+            const employeeId = params.row.employee_id;
+            const response = await fetch(
+              `http://localhost:3003/QRCodes/${employeeId}.png`
+            );
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
 
             const downloadLink = document.createElement("a");
             downloadLink.href = url;
-            downloadLink.download = `${params.row.employee_id}.png`;
+            downloadLink.download = `${employeeId}.png`;
             downloadLink.click();
 
             URL.revokeObjectURL(url);

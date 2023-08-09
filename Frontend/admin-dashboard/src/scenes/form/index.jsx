@@ -21,7 +21,7 @@ const Form = () => {
     console.log("Image was saved successfully: ", file);
   };
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values, { resetForm }) => {
     const formData = new FormData();
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
@@ -47,6 +47,8 @@ const Form = () => {
       .then((response) => {
         console.log("Form submitted successfully:", response);
         toast.success("User has been created successfully!");
+        resetForm();
+        setSelectedImage(null);
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
@@ -82,6 +84,8 @@ const Form = () => {
     state: "",
     zipCode: "",
     website: "",
+    employee_id: "",
+    position: ""
   };
 
   return (

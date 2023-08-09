@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     // Define the filename for uploaded files
-    cb(null, `${req.params.empID}`);
+    cb(null, `${req.params.empID}.png`);
   },
 });
 

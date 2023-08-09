@@ -29,7 +29,7 @@ function Header({ empID }) {
         <div className="vcard-header">
           <div className="img-wrap">
             <img
-              src={`http://localhost:3003/profiles/${empID}`}
+              src={`http://localhost:3003/profiles/${empID}.png`}
               alt="Profile"
             />
           </div>

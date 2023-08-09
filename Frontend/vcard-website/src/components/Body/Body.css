@@ -11,7 +11,7 @@
     position: relative;
     float: left;
     width: 100%;
-    padding: 20px 45px 40px;
+    padding: 0 45px 40px;
     box-shadow: 0 -5px 40px 7px rgba(0, 0, 0, 0.08);
   }
   
@@ -19,7 +19,7 @@
   table td {
     padding: 0.75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
   }
   
   .table-row-content {

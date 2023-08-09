@@ -83,20 +83,13 @@ const getWebsiteChartData = (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const qrcode_data = await generateQRCode(req.body);
+  await generateQRCode(req.body);
   dataModel.createUser(req.body, (error, userData) => {
     if (error) {
       console.error("Registration Failed:", error);
       return res.status(500).json("Registration Failed");
     } else {
-      dataModel.insertQrCodeData(qrcode_data, req.body.employee_id, (err) => {
-        if (err) {
-          console.error("Registration Failed:", err);
-          return res.status(500).json("Registration Failed");
-        } else {
-          return res.json("Registration Successful!");
-        }
-      });
+      return res.json("Registration Successful!");
     }
   });
 };
@@ -104,18 +97,32 @@ const createUser = async (req, res) => {
 const deleteUser = (req, res) => {
   const id = req.params.id;
 
-  const filePath = path.join(__dirname, "../profiles", id);
+  const profilePath = path.join(__dirname, "../profiles", `${id}.png`);
+  const QRCodePath = path.join(__dirname, "../QRCodes", `${id}.png`);
+  const VCardPath = path.join(__dirname, "../VCards", `${id}.png`);
 
   dataModel.deleteUser(id, (error, results) => {
     if (error) {
       console.error("Error deleting user data from the database:", error);
       res.status(500).json({ error: "Internal Server Error" });
     } else {
-      fs.unlink(filePath, (err) => {
+      fs.unlink(profilePath, (err) => {
         if (err) {
-          console.error("Error deleting image file:", err);
+          console.error("Error deleting profile image:", err);
         } else {
-          console.log("Image file deleted successfully!");
+          fs.unlink(QRCodePath, (err) => {
+            if (err) {
+              console.error("Error deleting QR code image:", err);
+            } else {
+              fs.unlink(VCardPath, (err) => {
+                if (err) {
+                  console.error("Error deleting contact card:", err);
+                } else {
+                  console.log("User deleted successfully!");
+                }
+              });
+            }
+          });
         }
       });
 

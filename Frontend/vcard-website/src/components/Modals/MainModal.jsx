@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ModalComponent() {
+export default function ModalComponent({ data }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -42,9 +42,9 @@ export default function ModalComponent() {
         <DialogTitle>{"Save VCard"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <Button href="" variant="outline">Download Vcard</Button>
+            <Button href={`http://localhost:3003/VCards/${data.employee_id}.vcf`} variant="outline">Download Vcard</Button>
             <EmailModal />
-            <Button variant="outline" href="mailto:?subject=Kamlesh Kumar's%20vCard&amp;body=Follow%20this%20link%20to%20download%20Kamlesh Kumar's%20vCard%3A https://media.qrtiger.com/vcard/O5AR.vcf">
+            <Button variant="outline" href={`mailto:?subject=${data.first_name} ${data.last_name}'s vCard&body=Follow this link to download ${data.first_name} ${data.last_name}'s vCard: http://localhost:3003/VCards/${data.employee_id}.vcf`}>
               Send from your Email
             </Button>
           </DialogContentText>
