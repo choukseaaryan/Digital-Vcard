@@ -35,7 +35,7 @@ function Header({ empID }) {
           </div>
           <div className="title">
             <h2>{data.first_name} {data.last_name}</h2>
-            <h6>{data.position} - Teleglobal International Pvt. Ltd.</h6>
+            <h6>{data.position} - {data.company}</h6>
           </div>
           <div className="btn-div row">
             <PhoneButton phone={data.phone_number} empID={empID} />

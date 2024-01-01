@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-const fs = require("fs");
 
 const app = express();
 const port = 3003;
@@ -10,7 +9,7 @@ const port = 3003;
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3001", "http://localhost:3002"],
+    origin: ["http://localhost:3001", "http://localhost:3002", "*"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );

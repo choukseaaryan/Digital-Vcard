@@ -18,7 +18,6 @@ function WebsiteButton({website, empID}) {
         }
       )
       .then((response) => {
-        console.log(response.data.message);
         window.location.href = `https://${website}/`;
       })
       .catch((error) => {

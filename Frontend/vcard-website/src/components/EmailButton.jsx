@@ -17,7 +17,6 @@ function EmailButton({ email, empID }) {
         }
       )
       .then((response) => {
-        console.log(response.data.message);
         window.location.href = `mailto:${email}`;
       })
       .catch((error) => {

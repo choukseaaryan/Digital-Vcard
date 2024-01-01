@@ -18,7 +18,6 @@ const Form = () => {
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
-    console.log("Image was saved successfully: ", file);
   };
 
   const handleFormSubmit = (values, { resetForm }) => {
@@ -34,13 +33,14 @@ const Form = () => {
     formData.append("zipCode", values.zipCode);
     formData.append("position", values.position);
     formData.append("website", values.website);
+    formData.append("company", values.company);
     formData.append("employee_id", values.employee_id);
     formData.append("image", selectedImage);
 
     axios
       .post(`http://localhost:3003/form/${values.employee_id}`, formData, {
         headers: {
-          "Content-type": "multipart/form-data", // Important to set the correct content type
+          "Content-type": "multipart/form-data",
         },
         withCredentials: true,
       })
@@ -242,7 +242,20 @@ const Form = () => {
                 name="website"
                 error={!!touched.website && !!errors.website}
                 helperText={touched.website && errors.website}
-                sx={{ gridColumn: "span 12" }}
+                sx={{ gridColumn: "span 6" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Company"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.company}
+                name="company"
+                error={!!touched.company && !!errors.company}
+                helperText={touched.company && errors.company}
+                sx={{ gridColumn: "span 6" }}
               />
               <TextField
                 fullWidth

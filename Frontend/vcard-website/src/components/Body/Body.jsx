@@ -16,8 +16,6 @@ function Body({ empID }) {
       .get(`http://localhost:3003/vcard/${empID}`)
       .then((response) => {
         setData(response.data[0]);
-        console.log("Data has been received!!");
-        console.log(response.data[0]);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -87,7 +85,7 @@ function Body({ empID }) {
 
                     <small style={{ color: "#b3b4bb" }}>{data.position}</small>
 
-                    <h5>Teleglobal International Pvt.Ltd.</h5>
+                    <h5>{data.company}</h5>
                   </div>
                 </th>
               </tr>

@@ -73,7 +73,7 @@ const getWebsiteChartData = (callback) => {
 
 const createUser = (userData, callback) => {
   const insertUsersSql =
-    "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, state, zipcode, position, website) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO users (first_name, last_name, address, phone_number, email, employee_id, city, state, zipcode, position, website, company) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
   pool.query(
     insertUsersSql,
     [
@@ -88,6 +88,7 @@ const createUser = (userData, callback) => {
       userData.zipCode,
       userData.position,
       userData.website,
+      userData.company
     ],
     (error, results) => {
       if (error) {

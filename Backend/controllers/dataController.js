@@ -1,6 +1,5 @@
 const dataModel = require("../models/dataModel");
 const generateQRCode = require("../utils/generateQRCode");
-// const upload = require("../middlewares/multerMiddleware");
 const fs = require("fs");
 const path = require("path");
 

@@ -19,7 +19,6 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
     axios.get("http://localhost:3003/api/data/lineChartData/emailData")
       .then((response) => {
         setEmailData(response.data);
-        console.log("Email Data: ", response.data);
       })
       .catch((error) => {
         console.error("Error fetching Email data:", error);
@@ -28,7 +27,6 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       axios.get("http://localhost:3003/api/data/lineChartData/phoneData")
       .then((response) => {
         setPhoneData(response.data);
-        console.log("Phone Data: ", response.data);
       })
       .catch((error) => {
         console.error("Error fetching Phone data:", error);
@@ -37,7 +35,6 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       axios.get("http://localhost:3003/api/data/lineChartData/websiteData")
       .then((response) => {
         setWebsiteData(response.data);
-        console.log("Website Data: ", response.data);
       })
       .catch((error) => {
         console.error("Error fetching Website data:", error);

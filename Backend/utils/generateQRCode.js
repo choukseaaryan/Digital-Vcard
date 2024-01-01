@@ -11,6 +11,8 @@ const generateQRCode = async (values) => {
 VERSION:3.0
 N:${values.lastName};${values.firstName};;;
 FN:${values.firstName} ${values.lastName}
+ORG:${values.company}
+TITLE:${values.position}
 ADR;TYPE=WORK:;;${values.address1} ${values.address2};${values.city};${values.state};${values.zipCode};;
 TEL;TYPE=WORK:${values.contact}
 EMAIL;TYPE=WORK:${values.email}
