@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: auto;
+  height: 100%;
+  font-family: sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.header-div a {
+  color: #fee2c5 !important;
+}
+
+
+@media (max-width:768px) {
+  .header-div {
+    padding: 0 !important;
+  }
+
+  .body-div {
+    padding: 0 !important;
+  }
+
+  .dbtn {
+    display: none !important;
+  }
+
+  .fbtn {
+    display: block !important;
+    color: #fee2c5 !important;
+  }
+}
+
+@media (min-width:768px) {
+  .fbtn {
+    display: none !important;
+  }
+}
+
+
+/* #C4DDFF */
+/* #001D6E */
+/* #7FB5FF */
+/* #FEE2C5 */
+/* #A6E3E9 */

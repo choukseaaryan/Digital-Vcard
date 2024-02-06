@@ -1,10 +1,22 @@
-const mysql = require("mysql");
+const mongoose = require("mongoose");
+const { DATABASE_URL } = process.env;
 
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "vcard",
+mongoose.set("strictQuery", false);
+
+mongoose.connect(DATABASE_URL, {
+	socketTimeoutMS: 0,
 });
 
-module.exports = pool;
+console.log("Connecting to MongoDb...");
+
+mongoose.connection.on("connected", function () {
+	console.log("Mongoose default connection open to " + DATABASE_URL);
+});
+
+mongoose.connection.on("error", function (err) {
+	console.log("Mongoose default connection error: " + err);
+});
+
+mongoose.connection.on("disconnected", function () {
+	console.log("Mongoose default connection disconnected");
+});

@@ -3,9 +3,10 @@ const fs = require("fs");
 const path = require("path");
 
 const generateQRCode = async (values) => {
-  const employeeId = values.employee_id;
-  const qrCodePath = path.join(__dirname, "..", "QRCodes", `${employeeId}.png`);
-  const vCardPath = path.join(__dirname, ".." , "VCards", `${employeeId}.vcf`);
+  const employeeId = values.employeeId;
+  const adminId = values.adminId;
+  const qrCodePath = path.join(__dirname, "..", "QRCodes", `${adminId}`, `${employeeId}.png`);
+  const vCardPath = path.join(__dirname, ".." , "VCards", `${adminId}`, `${employeeId}.vcf`);
 
   const vcfData = `BEGIN:VCARD
 VERSION:3.0
@@ -13,7 +14,7 @@ N:${values.lastName};${values.firstName};;;
 FN:${values.firstName} ${values.lastName}
 ORG:${values.company}
 TITLE:${values.position}
-ADR;TYPE=WORK:;;${values.address1} ${values.address2};${values.city};${values.state};${values.zipCode};;
+ADR;TYPE=WORK:;;${values.address};${values.city};${values.state};${values.zipCode};;
 TEL;TYPE=WORK:${values.contact}
 EMAIL;TYPE=WORK:${values.email}
 URL:${values.website}
