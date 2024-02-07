@@ -87,7 +87,7 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
 	try {
-		const { adminId } = req.decoded;
+		const adminId = req.decoded.id;
 		const users = await userModel.find({ adminId });
 
 		if (!users) {

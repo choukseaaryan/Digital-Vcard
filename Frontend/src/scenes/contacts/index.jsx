@@ -132,6 +132,7 @@ const Contacts = () => {
 			try {
 				const response = await MakeProtectedApiCall("get-users", "get");
 				if (response.status === 200) {
+					console.log(response.data.data);
 					setData(response.data.data);
 				}
 			} catch (error) {

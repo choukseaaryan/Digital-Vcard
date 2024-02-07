@@ -36,7 +36,6 @@ const login = async (req, res) => {
 			}),
 		};
 
-		console.log("adminData: ", adminData);
 		const obj = {
 			res,
 			msg: "Login Successful",
