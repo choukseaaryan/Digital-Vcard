@@ -8,6 +8,8 @@ const response = {
     }
     if (!data) {
       this.statusCode = 204;
+    } else {
+      this.statusCode = 200;
     }
     res.status(status || this.statusCode).json({
       msg: msg || this.msg,

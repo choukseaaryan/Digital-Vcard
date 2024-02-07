@@ -5,8 +5,8 @@ const path = require("path");
 const generateQRCode = async (values) => {
   const employeeId = values.employeeId;
   const adminId = values.adminId;
-  const qrCodePath = path.join(__dirname, "..", "QRCodes", `${adminId}`, `${employeeId}.png`);
-  const vCardPath = path.join(__dirname, ".." , "VCards", `${adminId}`, `${employeeId}.vcf`);
+  const qrCodePath = path.join(__dirname, "../files/QRCodes", `${adminId}`, `${employeeId}.png`);
+  const vCardPath = path.join(__dirname, "../files/VCards", `${adminId}`, `${employeeId}.vcf`);
 
   const vcfData = `BEGIN:VCARD
 VERSION:3.0

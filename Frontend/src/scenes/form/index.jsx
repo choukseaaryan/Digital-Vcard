@@ -32,7 +32,7 @@ const Form = () => {
 		formData.append("position", values.position);
 		formData.append("website", values.website);
 		formData.append("company", values.company);
-		formData.append("employee_id", values.employee_id);
+		formData.append("employeeId", values.employeeId);
 		formData.append("image", selectedImage);
 
 		const response = await MakeProtectedApiCall(
@@ -62,6 +62,13 @@ const Form = () => {
 			.required("Required"),
 		address1: yup.string().required("Required"),
 		address2: yup.string().required("Required"),
+		city: yup.string().required("Required"),
+		state: yup.string().required("Required"),
+		zipCode: yup.string().required("Required"),
+		company: yup.string().required("Required"),
+		employeeId: yup.string().required("Required"),
+		position: yup.string().required("Required"),
+		website: yup.string().required("Required"),
 	});
 
 	const initialValues = {
@@ -75,7 +82,7 @@ const Form = () => {
 		state: "",
 		zipCode: "",
 		website: "",
-		employee_id: "",
+		employeeId: "",
 		company: "",
 		position: "",
 	};
@@ -100,7 +107,7 @@ const Form = () => {
 					<form onSubmit={handleSubmit}>
 						<Box
 							display="grid"
-							gap="30px"
+							gap="20px"
 							gridTemplateColumns="repeat(12, minmax(0, 1fr))"
 							sx={{
 								"& > div": {
@@ -264,14 +271,14 @@ const Form = () => {
 								label="Employee ID"
 								onBlur={handleBlur}
 								onChange={handleChange}
-								value={values.employee_id}
-								name="employee_id"
+								value={values.employeeId}
+								name="employeeId"
 								error={
-									!!touched.employee_id &&
-									!!errors.employee_id
+									!!touched.employeeId &&
+									!!errors.employeeId
 								}
 								helperText={
-									touched.employee_id && errors.employee_id
+									touched.employeeId && errors.employeeId
 								}
 								sx={{ gridColumn: "span 6" }}
 							/>
@@ -294,7 +301,6 @@ const Form = () => {
 									backgroundColor: colors.primary[400],
 									borderRadius: "10px",
 									p: "5px",
-									mt: "-10px",
 								}}
 							>
 								<Box display="flex">
@@ -339,7 +345,7 @@ const Form = () => {
 									</Box>
 								</Box>
 							</Box>
-							<Box gridColumn="span 6">
+							<Box gridColumn="span 6" mt={1}>
 								<Box display="flex" justifyContent="end">
 									<Box>
 										<Button

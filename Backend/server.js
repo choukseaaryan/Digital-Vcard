@@ -16,9 +16,9 @@ router.use("/", qrCodes);
 
 const app = express();
 app.use(cors({ origin: "*" }));
-app.use("/profiles", express.static(path.join(__dirname, "profiles")));
-app.use("/QRCodes", express.static(path.join(__dirname, "QRCodes")));
-app.use("/VCards", express.static(path.join(__dirname, "VCards")));
+app.use("/profiles", express.static(path.join(__dirname, "files/profiles")));
+app.use("/QRCodes", express.static(path.join(__dirname, "files/QRCodes")));
+app.use("/VCards", express.static(path.join(__dirname, "files/VCards")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/v1", router);

@@ -1,5 +1,6 @@
 import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
@@ -91,8 +92,14 @@ const Contacts = () => {
 			flex: 1,
 			renderCell: (params) => (
 				<Button
-					variant="contained"
-					color="error"
+					variant="text"
+					sx={{
+						color: colors.grey[100],
+						transition: "all 0.3s",
+						"&:hover": {
+							color: colors.redAccent[500],
+						},
+					}}
 					onClick={() => {
 						const confirmed = window.confirm(
 							"Are you sure you want to delete this user?"
@@ -102,7 +109,7 @@ const Contacts = () => {
 						}
 					}}
 				>
-					Delete User
+					<DeleteIcon />
 				</Button>
 			),
 		},
@@ -139,8 +146,7 @@ const Contacts = () => {
 		<Box m="20px">
 			<Header title="USERS" subtitle="Manage your users here." />
 			<Box
-				m="40px 0 0 0"
-				height="75vh"
+				height="70vh"
 				sx={{
 					"& .MuiDataGrid-root": {
 						border: "none",

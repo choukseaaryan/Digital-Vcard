@@ -3,10 +3,17 @@ import { useContext } from "react";
 import { ColorModeContext } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 const Topbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    window.location.reload();
+  }
 
   return (
     <Box display="flex" justifyContent="right" p={2}>
@@ -19,6 +26,9 @@ const Topbar = () => {
           ) : (
             <LightModeOutlinedIcon />
           )}
+        </IconButton>
+        <IconButton onClick={handleLogout}>
+          <LogoutOutlinedIcon />
         </IconButton>
       </Box>
     </Box>

@@ -11,7 +11,8 @@ import {
 	Checkbox,
 	FormControlLabel,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { tokens } from "../../theme";
 import { Formik } from "formik";
 import * as Yup from "yup";

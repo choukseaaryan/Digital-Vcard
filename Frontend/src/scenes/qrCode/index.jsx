@@ -8,15 +8,12 @@ import MakeProtectedAPICall from "../../utils/api";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 
+const fileUrl = process.env.REACT_APP_FILE_URL;
+
 const QrCode = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    // {
-    //   field: "qr_id",
-    //   headerName: "QR ID",
-    //   flex: 1,
-    // },
     {
       field: "employeeId",
       headerName: "Employee ID",
@@ -43,10 +40,6 @@ const QrCode = () => {
       headerName: "Total Clicks",
       flex: 1,
     },
-    // {
-    //   field: "qrcode_data",
-    //   headerName: "QR Code Data",
-    // },
     {
       field: "download_qrcode",
       headerName: "Download QR Code",
@@ -57,7 +50,7 @@ const QrCode = () => {
             const adminId = params.row.adminId;
             const employeeId = params.row.employeeId;
             const response = await fetch(
-              `http://localhost:3003/QRCodes/${adminId+'/'+employeeId}.png`
+              `${fileUrl}/QRCodes/${adminId+'/'+employeeId}.png`
             );
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
@@ -92,7 +85,6 @@ const QrCode = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await MakeProtectedAPICall("get-qr-codes", "get")
-      console.log(response)
       if (response.status === 200) {
         setData(response.data.data);
       }
@@ -105,8 +97,7 @@ const QrCode = () => {
     <Box m="20px">
       <Header title="QR Details" subtitle="List of QR codes of users" />
       <Box
-        m="40px 0 0 0"
-        height="75vh"
+        height="70vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",

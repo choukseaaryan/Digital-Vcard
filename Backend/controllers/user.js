@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
 			zipCode,
 			website,
 			company,
-			employee_id,
+			employeeId,
 			position,
 		} = req.body;
 		const adminId = req.decoded.id;
@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
 		
 		const existingUser = await userModel.findOne({
 			adminId,
-			employeeId: employee_id,
+			employeeId,
 		});
 		
 		if (existingUser) {
@@ -44,7 +44,7 @@ const createUser = async (req, res) => {
 			address: `${address1} ${address2}`,
 			contact,
 			email,
-			employeeId: employee_id,
+			employeeId,
 			city,
 			state,
 			zipCode,
@@ -64,7 +64,7 @@ const createUser = async (req, res) => {
 		const qrCode = await qrCodeModel.create({
 			adminId,
 			userId: newUser._id,
-			employeeId: employee_id,
+			employeeId,
 		});
 
 		if (!qrCode) {
@@ -87,9 +87,8 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
 	try {
-		const { adminId } = req.query;
-		// const users = await userModel.find({ adminId });
-		const users = await userModel.find({});
+		const { adminId } = req.decoded;
+		const users = await userModel.find({ adminId });
 
 		if (!users) {
 			return response.error({
@@ -98,6 +97,9 @@ const getAllUsers = async (req, res) => {
 				data: [],
 			});
 		}
+
+		users.sort((a, b) => a.employeeId.localeCompare(b.employeeId));
+		
 
 		return response.success({
 			res,

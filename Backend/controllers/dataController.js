@@ -96,9 +96,9 @@ const createUser = async (req, res) => {
 const deleteUser = (req, res) => {
   const id = req.params.id;
 
-  const profilePath = path.join(__dirname, "../profiles", `${id}.png`);
-  const QRCodePath = path.join(__dirname, "../QRCodes", `${id}.png`);
-  const VCardPath = path.join(__dirname, "../VCards", `${id}.png`);
+  const profilePath = path.join(__dirname, "../files/profiles", `${id}.png`);
+  const QRCodePath = path.join(__dirname, "../files/QRCodes", `${id}.png`);
+  const VCardPath = path.join(__dirname, "../files/VCards", `${id}.png`);
 
   dataModel.deleteUser(id, (error, results) => {
     if (error) {

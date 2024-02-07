@@ -5,8 +5,8 @@ import BarChart from "../../components/BarChart";
 const Bar = () => {
   return (
     <Box m="20px">
-      <Header title="Bar Chart" subtitle="Simple Bar Chart" />
-      <Box height="75vh">
+      <Header title="Total Clicks Per User" subtitle="Bar Chart" />
+      <Box height="70vh">
         <BarChart />
       </Box>
     </Box>

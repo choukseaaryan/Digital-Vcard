@@ -1,49 +1,125 @@
-import MakeProtectedAPICall from "../../utils/api"
-import PhoneButton from "../PhoneButton";
-import EmailButton from "../EmailButton";
-import WebsiteButton from "../WebsiteButton";
-import "./index.css";
-import { useState, useEffect } from "react";
+import { Typography, Box } from "@mui/material";
+import Phone from "@mui/icons-material/Phone";
+import Email from "@mui/icons-material/Email";
+import Language from "@mui/icons-material/Language";
 
-function Header({ empID, company }) {
-  const [data, setData] = useState(null);
+const fileUrl = process.env.REACT_APP_FILE_URL;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = `get-user/${company}/${empID}`
-      const response = await MakeProtectedAPICall(url, "get");
-      if (response.status === 200) {
-        setData(response.data.data);
-      }
-    }
-    fetchData();
-  }, [empID]);
+function Header({ data, handleLinkClick}) {
 
-  if (data) {
-    return (
-      <div className="header-div">
-        <div className="vcard-header">
-          <div className="img-wrap">
-            <img
-              src={`http://localhost:3003/profiles/${data.adminId}/${empID}.png`}
-              alt="Profile"
-            />
-          </div>
-          <div className="title">
-            <h2>{data.firstName} {data.lastName}</h2>
-            <h6>{data.position} - {data.company}</h6>
-          </div>
-          <div className="btn-div row">
-            <PhoneButton phone={data.contact} empID={empID} />
-            <EmailButton email={data.email} empID={empID} />
-            <WebsiteButton website={data.website} empID={empID} />
-          </div>
-        </div>
-      </div>
-    );
-  } else {
-    return <div>Please check the employee id!</div>;
-  }
+	return (
+		<Box
+			m={0}
+			p={"60px 25% 0 25%"}
+			textAlign={"center"}
+			alignItems={"center"}
+			color={"#fee2c5"}
+			bgcolor={"#001d6e"}
+		>
+			{data ? (
+				<Box
+					textAlign={"center"}
+					alignItems={"center"}
+					boxShadow={"0px 0px 20px 5px rgba(0, 0, 0, 0.2)"}
+				>
+					<Box pt={5} pb={3}>
+						<Box
+							component={"img"}
+							src={`${fileUrl}/profiles/${data.adminId}/${data.employeeId}.png`}
+							alt="Profile"
+							borderRadius={"50%"}
+							border={"1px solid #fff"}
+							boxShadow={"0 0 20px 5px rgba(0, 0, 0, 0.5)"}
+							width={"100px"}
+							height={"100px"}
+						/>
+					</Box>
+					<Box>
+						<Typography variant="h2">
+							{data.firstName} {data.lastName}
+						</Typography>
+						<Typography variant="h4" mt={1} mb={2}>
+							{data.position} - {data.company}
+						</Typography>
+					</Box>
+					<Box
+						display={"flex"}
+						width={"100%"}
+						borderTop={"1px solid rgba(255, 255, 255, 0.15)"}
+						mt={1}
+					>
+						<Box
+							variant="button"
+							width={"33.33%"}
+							onClick={() => handleLinkClick("clicksPhone")}
+							p={3}
+							display={"flex"}
+							justifyContent={"center"}
+							alignItems={"center"}
+							borderRight={"1px solid rgba(255, 255, 255, 0.15)"}
+							sx={{
+								cursor: "pointer",
+								transition: "background-color 0.3s ease",
+								"&:hover": {
+									backgroundColor: "rgba(0, 0, 0, 0.3)",
+								},
+							}}
+						>
+							<Phone />
+							<Typography variant="span" ml={2}>
+								Phone
+							</Typography>
+						</Box>
+						<Box
+							variant="button"
+							width={"33.33%"}
+							onClick={() => handleLinkClick("clicksEmail")}
+							p={3}
+							display={"flex"}
+							justifyContent={"center"}
+							alignItems={"center"}
+							borderRight={"1px solid rgba(255, 255, 255, 0.15)"}
+							sx={{
+								cursor: "pointer",
+								transition: "background-color 0.3s ease",
+								"&:hover": {
+									backgroundColor: "rgba(0, 0, 0, 0.3)",
+								},
+							}}
+						>
+							<Email />
+							<Typography variant="span" ml={2}>
+								Email
+							</Typography>
+						</Box>
+						<Box
+							variant="button"
+							width={"33.33%"}
+							onClick={() => handleLinkClick("clicksWebsite")}
+							p={3}
+							display={"flex"}
+							justifyContent={"center"}
+							alignItems={"center"}
+							sx={{
+								cursor: "pointer",
+								transition: "background-color 0.3s ease",
+								"&:hover": {
+									backgroundColor: "rgba(0, 0, 0, 0.3)",
+								},
+							}}
+						>
+							<Language />
+							<Typography variant="span" ml={2}>
+								Website
+							</Typography>
+						</Box>
+					</Box>
+				</Box>
+			) : (
+				<Typography variant="h1">Please check the employee id!</Typography>
+			)}
+		</Box>
+	);
 }
 
 export default Header;

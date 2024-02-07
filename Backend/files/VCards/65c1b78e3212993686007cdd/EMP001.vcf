@@ -2,9 +2,9 @@ BEGIN:VCARD
 VERSION:3.0
 N:Chouksey;Aaryan;;;
 FN:Aaryan Chouksey
-ORG:MIT World Peace University
+ORG:MITWPU
 TITLE:Student
-ADR;TYPE=WORK:;;Raja Mohalla asd;Hoshangabad;Madhya Pradesh;461001;;
+ADR;TYPE=WORK:;;Behind Bohra Masjid Raja Mohalla;Hoshangabad;Madhya Pradesh;461001;;
 TEL;TYPE=WORK:+918989233333
 EMAIL;TYPE=WORK:aaryan2chouksey@gmail.com
 URL:choukseaaryan.is-a.dev
