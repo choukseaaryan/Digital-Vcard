@@ -1,5 +1,4 @@
-require("dotenv").config({ path: "./config/.env" });
-const PORT = process.env.PORT || 3003;
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -9,6 +8,10 @@ const router = express.Router();
 const adminRoutes = require("./routes/admin");
 const userRoutes = require("./routes/user");
 const qrCodes = require("./routes/qrCode");
+const mongoose = require("mongoose");
+
+const { DATABASE_URL } = process.env;
+const PORT = process.env.PORT || 3003;
 
 router.use("/", userRoutes);
 router.use("/", adminRoutes);
@@ -23,12 +26,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/v1", router);
 
-require("./config/db");
+mongoose.set("strictQuery", false);
+
+mongoose.connect(DATABASE_URL, {
+	socketTimeoutMS: 0,
+});
+
+console.log("Connecting to MongoDb...");
+
+mongoose.connection.on("connected", function () {
+	console.log("Mongoose default connection open to " + DATABASE_URL);
+
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`);
+	});
+});
+
+mongoose.connection.on("error", function (err) {
+	console.log("Mongoose default connection error: " + err);
+});
+
+mongoose.connection.on("disconnected", function () {
+	console.log("Mongoose default connection disconnected");
+});
 
 app.get("/", (req, res) => {
 	res.send("Server is ready");
-});
-
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
 });
