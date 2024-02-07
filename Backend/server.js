@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 
 const { DATABASE_URL } = process.env;
 const PORT = process.env.PORT || 3003;
-
+console.log("db url: ", process.env.DATABASE_URL,  process.env.PORT);
 router.use("/", userRoutes);
 router.use("/", adminRoutes);
 router.use("/", qrCodes);
