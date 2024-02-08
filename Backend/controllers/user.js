@@ -1,9 +1,10 @@
-const generateQRCode = require("../utils/generateQRCode");
+const generateQRCodeAndVCF = require("../utils/generateQRCodeAndVCF");
 const response = require("../utils/response");
 const handleException = require("../utils/exception");
 const userModel = require("../models/user");
-const deleteFiles = require("../utils/deleteFiles");
+const deleteFile = require("../utils/deleteFile");
 const qrCodeModel = require("../models/qrCode");
+const uploadFile = require("../utils/uploadFile");
 
 const createUser = async (req, res) => {
 	try {
@@ -22,21 +23,26 @@ const createUser = async (req, res) => {
 			employeeId,
 			position,
 		} = req.body;
+
+		const file = {
+			type: req.file.mimetype,
+			buffer: req.file.buffer,
+		};
+
 		const adminId = req.decoded.id;
-		
-		
+
 		const existingUser = await userModel.findOne({
 			adminId,
 			employeeId,
 		});
-		
+
 		if (existingUser) {
 			return response.error({
 				res,
 				msg: "User already exists with this Employee ID",
 			});
 		}
-		
+
 		const newUser = await userModel.create({
 			adminId,
 			firstName,
@@ -52,7 +58,7 @@ const createUser = async (req, res) => {
 			website,
 			company,
 		});
-		
+
 		if (!newUser) {
 			return response.error({
 				res,
@@ -60,7 +66,22 @@ const createUser = async (req, res) => {
 			});
 		}
 
-		await generateQRCode(newUser);
+		const uploadedFile = await uploadFile({
+			file,
+			adminId,
+			userId: newUser._id,
+			location: "profiles",
+		});
+
+		const qrAndVcfFile = await generateQRCodeAndVCF(newUser);
+
+		if (!uploadedFile && !qrAndVcfFile) {
+			return response.error({
+				res,
+				msg: "User created but failed to upload file or generate QR code",
+			});
+		}
+
 		const qrCode = await qrCodeModel.create({
 			adminId,
 			userId: newUser._id,
@@ -99,7 +120,6 @@ const getAllUsers = async (req, res) => {
 		}
 
 		users.sort((a, b) => a.employeeId.localeCompare(b.employeeId));
-		
 
 		return response.success({
 			res,
@@ -115,6 +135,7 @@ const getAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
 	try {
 		const { id } = req.params;
+		const adminId = req.decoded.id;
 
 		const user = await userModel.findByIdAndDelete(id);
 
@@ -134,7 +155,24 @@ const deleteUser = async (req, res) => {
 			});
 		}
 
-		await deleteFiles(user.employeeId, user.adminId);
+		await deleteFile({
+			adminId,
+			userId: id,
+			location: "profiles",
+		});
+
+		await deleteFile({
+			adminId,
+			userId: id,
+			location: "QRCodes",
+		});
+
+		await deleteFile({
+			adminId,
+			userId: id,
+			location: "VCards",
+		});
+
 
 		return response.success({
 			res,

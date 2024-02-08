@@ -14,6 +14,8 @@ const getQRCodeData = async (req, res) => {
 			});
 		}
 
+		qrCodeData.sort((a, b) => a.employeeId.localeCompare(b.employeeId));
+
 		return response.success({
 			res,
 			msg: "QR Code Data Found",
