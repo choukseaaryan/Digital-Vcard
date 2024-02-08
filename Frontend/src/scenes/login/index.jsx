@@ -17,6 +17,7 @@ import { tokens } from "../../theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import MakeProtectedApiCall from "../../utils/api";
+import PageLoader from "../../components/PageLoader";
 
 const Login = () => {
 	const theme = useTheme();
@@ -24,6 +25,7 @@ const Login = () => {
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [rememberMe, setRememberMe] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const initialValues = {
 		email: "",
@@ -36,6 +38,7 @@ const Login = () => {
 	});
 
 	const handleFormSubmit = async (values, { resetForm }) => {
+		setLoading(true);
     const payload = {
       email: values.email,
       password: values.password,
@@ -51,6 +54,7 @@ const Login = () => {
       }
       window.location.href = "/";
     }
+		setLoading(false);
   };
 
 	const handleTogglePassword = () => {
@@ -63,6 +67,7 @@ const Login = () => {
 
 	return (
 		<Box display="flex" alignItems="center" justifyContent="center">
+			{loading && <PageLoader />}
 			<Box
 				backgroundColor={colors.primary[400]}
 				mt="10%"

@@ -1,16 +1,20 @@
+import { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { useEffect, useState } from "react";
 import MakeProtectedAPICall from "../../utils/api";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
+import PageLoader from "../../components/PageLoader";
 
 const QrCode = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const [loading, setLoading] = useState(false);
+
 	const columns = [
 		{
 			field: "employeeId",
@@ -82,10 +86,12 @@ const QrCode = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			setLoading(true);
 			const response = await MakeProtectedAPICall("get-qr-codes", "get");
 			if (response.status === 200) {
 				setData(response.data.data);
 			}
+			setLoading(false);
 		};
 
 		fetchData();
@@ -93,6 +99,7 @@ const QrCode = () => {
 
 	return (
 		<Box m="20px">
+			{loading && <PageLoader />}
 			<Header title="QR Details" subtitle="List of QR codes of users" />
 			<Box
 				height="70vh"
