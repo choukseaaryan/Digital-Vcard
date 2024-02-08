@@ -16,7 +16,6 @@ const MyBarChart = ({ isDashboard = false }) => {
 				"get"
 			);
 			if (response.status === 200) {
-				console.log(response.data.data);
 				setData(() => {
 					// eslint-disable-next-line
 					return response.data.data == [] ? null : response.data.data;
@@ -27,8 +26,6 @@ const MyBarChart = ({ isDashboard = false }) => {
 
 		fetchData();
 	}, []);
-
-	console.log(data);
 
 	return (
 		<>
