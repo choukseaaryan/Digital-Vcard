@@ -4,12 +4,14 @@ import Body from "../../components/VcardBody";
 import { useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import MakeProtectedApiCall from "../../utils/api";
+import PageLoader from "../../components/PageLoader";
 
 const VCard = () => {
 	const { company, empId } = useParams();
 
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [pageLoading, setPageLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -55,8 +57,9 @@ const VCard = () => {
     </Box>
 	) : (
 		<Box bgcolor={"#fff"}>
+			{pageLoading && <PageLoader />}
 			<Header data={data} handleLinkClick={handleLinkClick} />
-			<Body data={data} handleLinkClick={handleLinkClick} />
+			<Body data={data} handleLinkClick={handleLinkClick} setLoading={setPageLoading} />
 		</Box>
 	);
 };

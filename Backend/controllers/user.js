@@ -66,26 +66,32 @@ const createUser = async (req, res) => {
 			});
 		}
 
-		const uploadedFile = await uploadFile({
+		const profileUrl = await uploadFile({
 			file,
 			adminId,
 			userId: newUser._id,
 			location: "profiles",
 		});
 
-		const qrAndVcfFile = await generateQRCodeAndVCF(newUser);
+		newUser.profileUrl = profileUrl;
 
-		if (!uploadedFile && !qrAndVcfFile) {
+		const vcfUrls = await generateQRCodeAndVCF(newUser);
+
+		if (!profileUrl && !vcfUrls) {
 			return response.error({
 				res,
-				msg: "User created but failed to upload file or generate QR code",
+				msg: "User created but failed to upload file and generate QR code",
 			});
 		}
+
+		newUser.vcfUrl = vcfUrls.vcfUrl;
+		await newUser.save();
 
 		const qrCode = await qrCodeModel.create({
 			adminId,
 			userId: newUser._id,
 			employeeId,
+			qrCodeUrl: vcfUrls.qrCodeUrl,
 		});
 
 		if (!qrCode) {
@@ -172,7 +178,6 @@ const deleteUser = async (req, res) => {
 			userId: id,
 			location: "VCards",
 		});
-
 
 		return response.success({
 			res,

@@ -6,7 +6,7 @@ import LocationOn from "@mui/icons-material/LocationOn";
 import Language from "@mui/icons-material/Language";
 import MainModal from "../Modals/MainModal";
 
-function Body({ data, handleLinkClick }) {
+function Body({ data, handleLinkClick, setLoading }) {
 	return data ? (
 		<Box
 			m={0}
@@ -142,7 +142,7 @@ function Body({ data, handleLinkClick }) {
 					</Box>
 				</Box>
 
-				<MainModal data={data} />
+				<MainModal data={data} setLoading={setLoading} />
 			</Box>
 		</Box>
 	) : (

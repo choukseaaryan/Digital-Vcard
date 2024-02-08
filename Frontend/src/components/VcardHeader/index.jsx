@@ -3,8 +3,6 @@ import Phone from "@mui/icons-material/Phone";
 import Email from "@mui/icons-material/Email";
 import Language from "@mui/icons-material/Language";
 
-const fileUrl = process.env.REACT_APP_FILE_URL;
-
 function Header({ data, handleLinkClick}) {
 
 	return (
@@ -25,7 +23,7 @@ function Header({ data, handleLinkClick}) {
 					<Box pt={5} pb={3}>
 						<Box
 							component={"img"}
-							src={`${fileUrl}/profiles/${data.adminId}/${data.employeeId}.png`}
+							src={data.profileUrl}
 							alt="Profile"
 							borderRadius={"50%"}
 							border={"1px solid #fff"}

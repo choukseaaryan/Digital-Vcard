@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
 	position: { type: String, default: "" },
 	website: { type: String, default: "" },
 	company: { type: String, default: "" },
+	profileUrl: { type: String, default: "" },
+	vcfUrl: { type: String, default: "" },
 });
 
 module.exports = mongoose.model("users", userSchema);

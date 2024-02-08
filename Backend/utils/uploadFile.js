@@ -1,4 +1,4 @@
-const { getStorage, ref, uploadBytesResumable } = require("firebase/storage");
+const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { signInWithEmailAndPassword } = require("firebase/auth");
 const { auth } = require("../config/firebase.config");
 
@@ -40,7 +40,9 @@ const uploadFile = async ({ file, adminId, userId, location }) => {
 		};
 
 		await uploadBytesResumable(storageRef, fileBuffer, metadata);
-		return fileName;
+		const downloadURL = await getDownloadURL(storageRef);
+
+		return downloadURL;
 	} catch (error) {
 		console.error("Failed to upload file:", error);
 		return null;
