@@ -18,7 +18,7 @@ const MyLineChart = ({ isDashboard = false }) => {
 			if (response.status === 200) {
 				setData(() => {
 					// eslint-disable-next-line
-					response.data.data == [] ? null : response.data.data;
+					return response.data.data == [] ? null : response.data.data;
 				});
 			}
 			setLoading(false);
