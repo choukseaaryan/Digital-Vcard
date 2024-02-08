@@ -15,7 +15,7 @@ const StatBox = ({ title, subtitle, icon, increase }) => {
 						fontWeight="bold"
 						sx={{ color: colors.grey[100] }}
 					>
-						{title}
+						{title || "0"}
 					</Typography>
 				</Box>
 			</Box>

@@ -7,9 +7,12 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import MakeProtectedApiCall from "../../utils/api";
+import PageLoader from "../../components/PageLoader";
+import { toast } from "react-toastify";
 
 const Form = () => {
 	const [selectedImage, setSelectedImage] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
@@ -19,6 +22,13 @@ const Form = () => {
 	};
 
 	const handleFormSubmit = async (values, { resetForm }) => {
+		setLoading(true);
+
+		if (!selectedImage) {
+			toast.error("Please upload an image");
+			setLoading(false);
+			return;
+		}
 		const formData = new FormData();
 		formData.append("firstName", values.firstName);
 		formData.append("lastName", values.lastName);
@@ -45,6 +55,7 @@ const Form = () => {
 			resetForm();
 			setSelectedImage(null);
 		}
+		setLoading(false);
 	};
 
 	const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -88,281 +99,320 @@ const Form = () => {
 	};
 
 	return (
-		<Box p="20px">
-			<Header title="CREATE USER" subtitle="Create a New User Profile" />
+		<>
+			{loading && <PageLoader />}
+			<Box p="20px">
+				<Header
+					title="CREATE USER"
+					subtitle="Create a New User Profile"
+				/>
 
-			<Formik
-				onSubmit={handleFormSubmit}
-				initialValues={initialValues}
-				validationSchema={checkoutSchema}
-			>
-				{({
-					values,
-					errors,
-					touched,
-					handleBlur,
-					handleChange,
-					handleSubmit,
-				}) => (
-					<form onSubmit={handleSubmit}>
-						<Box
-							display="grid"
-							gap="20px"
-							gridTemplateColumns="repeat(12, minmax(0, 1fr))"
-							sx={{
-								"& > div": {
-									gridColumn: isNonMobile
-										? undefined
-										: "span 12",
-								},
-							}}
-						>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="First Name"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.firstName}
-								name="firstName"
-								error={
-									!!touched.firstName && !!errors.firstName
-								}
-								helperText={
-									touched.firstName && errors.firstName
-								}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Last Name"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.lastName}
-								name="lastName"
-								error={!!touched.lastName && !!errors.lastName}
-								helperText={touched.lastName && errors.lastName}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Email"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.email}
-								name="email"
-								error={!!touched.email && !!errors.email}
-								helperText={touched.email && errors.email}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Contact Number"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.contact}
-								name="contact"
-								error={!!touched.contact && !!errors.contact}
-								helperText={touched.contact && errors.contact}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Address Line 1"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.address1}
-								name="address1"
-								error={!!touched.address1 && !!errors.address1}
-								helperText={touched.address1 && errors.address1}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Address Line 2"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.address2}
-								name="address2"
-								error={!!touched.address2 && !!errors.address2}
-								helperText={touched.address2 && errors.address2}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="City"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.city}
-								name="city"
-								error={!!touched.city && !!errors.city}
-								helperText={touched.city && errors.city}
-								sx={{ gridColumn: "span 4" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="State"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.state}
-								name="state"
-								error={!!touched.state && !!errors.state}
-								helperText={touched.state && errors.state}
-								sx={{ gridColumn: "span 4" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Zip Code"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.zipCode}
-								name="zipCode"
-								error={!!touched.zipCode && !!errors.zipCode}
-								helperText={touched.zipCode && errors.zipCode}
-								sx={{ gridColumn: "span 4" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Website"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.website}
-								name="website"
-								error={!!touched.website && !!errors.website}
-								helperText={touched.website && errors.website}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Company"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.company}
-								name="company"
-								error={!!touched.company && !!errors.company}
-								helperText={touched.company && errors.company}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Employee ID"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.employeeId}
-								name="employeeId"
-								error={
-									!!touched.employeeId &&
-									!!errors.employeeId
-								}
-								helperText={
-									touched.employeeId && errors.employeeId
-								}
-								sx={{ gridColumn: "span 6" }}
-							/>
-							<TextField
-								fullWidth
-								variant="filled"
-								type="text"
-								label="Position"
-								onBlur={handleBlur}
-								onChange={handleChange}
-								value={values.position}
-								name="position"
-								error={!!touched.position && !!errors.position}
-								helperText={touched.position && errors.position}
-								sx={{ gridColumn: "span 6" }}
-							/>
+				<Formik
+					onSubmit={handleFormSubmit}
+					initialValues={initialValues}
+					validationSchema={checkoutSchema}
+				>
+					{({
+						values,
+						errors,
+						touched,
+						handleBlur,
+						handleChange,
+						handleSubmit,
+					}) => (
+						<form onSubmit={handleSubmit}>
 							<Box
-								gridColumn="span 6"
+								display="grid"
+								gap="20px"
+								gridTemplateColumns="repeat(12, minmax(0, 1fr))"
 								sx={{
-									backgroundColor: colors.primary[400],
-									borderRadius: "10px",
-									p: "5px",
+									"& > div": {
+										gridColumn: isNonMobile
+											? undefined
+											: "span 12",
+									},
 								}}
 							>
-								<Box display="flex">
-									<Box>
-										<input
-											type="file"
-											accept="image/*"
-											onChange={handleImageUpload}
-											style={{ display: "none" }}
-											id="image-upload-input"
-										/>
-										<label htmlFor="image-upload-input">
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="First Name"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.firstName}
+									name="firstName"
+									error={
+										!!touched.firstName &&
+										!!errors.firstName
+									}
+									helperText={
+										touched.firstName && errors.firstName
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Last Name"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.lastName}
+									name="lastName"
+									error={
+										!!touched.lastName && !!errors.lastName
+									}
+									helperText={
+										touched.lastName && errors.lastName
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Email"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.email}
+									name="email"
+									error={!!touched.email && !!errors.email}
+									helperText={touched.email && errors.email}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Contact Number"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.contact}
+									name="contact"
+									error={
+										!!touched.contact && !!errors.contact
+									}
+									helperText={
+										touched.contact && errors.contact
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Address Line 1"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.address1}
+									name="address1"
+									error={
+										!!touched.address1 && !!errors.address1
+									}
+									helperText={
+										touched.address1 && errors.address1
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Address Line 2"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.address2}
+									name="address2"
+									error={
+										!!touched.address2 && !!errors.address2
+									}
+									helperText={
+										touched.address2 && errors.address2
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="City"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.city}
+									name="city"
+									error={!!touched.city && !!errors.city}
+									helperText={touched.city && errors.city}
+									sx={{ gridColumn: "span 4" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="State"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.state}
+									name="state"
+									error={!!touched.state && !!errors.state}
+									helperText={touched.state && errors.state}
+									sx={{ gridColumn: "span 4" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Zip Code"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.zipCode}
+									name="zipCode"
+									error={
+										!!touched.zipCode && !!errors.zipCode
+									}
+									helperText={
+										touched.zipCode && errors.zipCode
+									}
+									sx={{ gridColumn: "span 4" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Website"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.website}
+									name="website"
+									error={
+										!!touched.website && !!errors.website
+									}
+									helperText={
+										touched.website && errors.website
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Company"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.company}
+									name="company"
+									error={
+										!!touched.company && !!errors.company
+									}
+									helperText={
+										touched.company && errors.company
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Employee ID"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.employeeId}
+									name="employeeId"
+									error={
+										!!touched.employeeId &&
+										!!errors.employeeId
+									}
+									helperText={
+										touched.employeeId && errors.employeeId
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<TextField
+									fullWidth
+									variant="filled"
+									type="text"
+									label="Position"
+									onBlur={handleBlur}
+									onChange={handleChange}
+									value={values.position}
+									name="position"
+									error={
+										!!touched.position && !!errors.position
+									}
+									helperText={
+										touched.position && errors.position
+									}
+									sx={{ gridColumn: "span 6" }}
+								/>
+								<Box
+									gridColumn="span 6"
+									sx={{
+										backgroundColor: colors.primary[400],
+										borderRadius: "10px",
+										p: "5px",
+									}}
+								>
+									<Box display="flex">
+										<Box>
+											<input
+												type="file"
+												accept="image/*"
+												onChange={handleImageUpload}
+												style={{ display: "none" }}
+												id="image-upload-input"
+											/>
+											<label htmlFor="image-upload-input">
+												<Button
+													component="span"
+													color="secondary"
+													variant="contained"
+													sx={{
+														height: "100%",
+													}}
+												>
+													Upload Profile Image
+												</Button>
+											</label>
+										</Box>
+										<Box>
+											{selectedImage && (
+												<Box
+													gridColumn="span 4"
+													sx={{
+														pl: "10px",
+													}}
+												>
+													<Typography
+														variant="body1"
+														color="textSecondary"
+													>
+														Selected Image:{" "}
+														{selectedImage.name}
+													</Typography>
+												</Box>
+											)}
+										</Box>
+									</Box>
+								</Box>
+								<Box gridColumn="span 6" mt={1}>
+									<Box display="flex" justifyContent="end">
+										<Box>
 											<Button
-												component="span"
+												type="submit"
 												color="secondary"
 												variant="contained"
-												sx={{
-													height: "100%",
-												}}
 											>
-												Upload Profile Image
+												Create New User
 											</Button>
-										</label>
-									</Box>
-									<Box>
-										{selectedImage && (
-											<Box
-												gridColumn="span 4"
-												sx={{
-													pl: "10px",
-												}}
-											>
-												<Typography
-													variant="body1"
-													color="textSecondary"
-												>
-													Selected Image:{" "}
-													{selectedImage.name}
-												</Typography>
-											</Box>
-										)}
+										</Box>
 									</Box>
 								</Box>
 							</Box>
-							<Box gridColumn="span 6" mt={1}>
-								<Box display="flex" justifyContent="end">
-									<Box>
-										<Button
-											type="submit"
-											color="secondary"
-											variant="contained"
-										>
-											Create New User
-										</Button>
-									</Box>
-								</Box>
-							</Box>
-						</Box>
-					</form>
-				)}
-			</Formik>
-		</Box>
+						</form>
+					)}
+				</Formik>
+			</Box>
+		</>
 	);
 };
 

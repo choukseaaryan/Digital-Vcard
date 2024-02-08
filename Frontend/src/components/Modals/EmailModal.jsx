@@ -7,11 +7,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import axios from "axios";
 
-const fileUrl = process.env.REACT_APP_FILE_URL;
-
-export default function FormDialog({ data }) {
+export default function FormDialog({ data, setLoading }) {
 	const [open, setOpen] = useState(false);
 	const [email, setEmail] = useState("");
 
@@ -24,15 +21,22 @@ export default function FormDialog({ data }) {
 	};
 
 	const handleSend = async () => {
+		setOpen(false);
+		setLoading(true);
 		const bodyMessage = `Hello, \n\nPlease find the VCard of ${data.firstName} ${data.lastName} attached with this email. \n\nThank you!`;
 
-    const file = await axios.get(`${fileUrl}/VCards/${data.adminId}/${data.employeeId}.vcf`, { responseType: "arraybuffer" });
-    const binaryData = new Uint8Array(file.data);
-    const vCardData = btoa(
-      binaryData.reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
+		const response = await fetch(data.vcfUrl);
+		const arrayBuffer = await response.arrayBuffer();
+		const binaryData = new Uint8Array(arrayBuffer);
+		const vCardData = btoa(
+			binaryData.reduce(
+				(data, byte) => data + String.fromCharCode(byte),
+				""
+			)
+		);
+
 		window.Email.send({
-      SecureToken: "ef89ab81-3da9-4ba9-9795-c369861d8b3d",
+			SecureToken: "ef89ab81-3da9-4ba9-9795-c369861d8b3d",
 			To: email,
 			From: "aaryan2chouksey@gmail.com",
 			Subject: `VCard of ${data.firstName} ${data.lastName}`,
@@ -40,7 +44,7 @@ export default function FormDialog({ data }) {
 			Attachments: [
 				{
 					name: `${data.firstName}_${data.lastName}.vcf`,
-					data: vCardData,        
+					data: vCardData,
 				},
 			],
 		}).then((message) => {
@@ -49,7 +53,7 @@ export default function FormDialog({ data }) {
 			} else {
 				toast.error("Could not send mail! Please try again.");
 			}
-			setOpen(false);
+			setLoading(false);
 		});
 	};
 
