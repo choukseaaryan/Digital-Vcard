@@ -1,14 +1,16 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, useMediaQuery } from "@mui/material";
 import Phone from "@mui/icons-material/Phone";
 import Email from "@mui/icons-material/Email";
 import Language from "@mui/icons-material/Language";
 
 function Header({ data, handleLinkClick}) {
+	const md = useMediaQuery("(max-width: 768px)");
+	const sm = useMediaQuery("(max-width: 425px)");
 
 	return (
 		<Box
 			m={0}
-			p={"60px 25% 0 25%"}
+			p={md ? "0" : "60px 25% 0 25%"}
 			textAlign={"center"}
 			alignItems={"center"}
 			color={"#fee2c5"}
@@ -41,20 +43,21 @@ function Header({ data, handleLinkClick}) {
 						</Typography>
 					</Box>
 					<Box
-						display={"flex"}
+						display={sm ? "block" : "flex"}
 						width={"100%"}
 						borderTop={"1px solid rgba(255, 255, 255, 0.15)"}
 						mt={1}
 					>
 						<Box
 							variant="button"
-							width={"33.33%"}
+							width={sm ? "100%" : "33.33%"}
 							onClick={() => handleLinkClick("clicksPhone")}
 							p={3}
 							display={"flex"}
 							justifyContent={"center"}
 							alignItems={"center"}
-							borderRight={"1px solid rgba(255, 255, 255, 0.15)"}
+							borderBottom={sm ? "1px solid rgba(255, 255, 255, 0.15)" : ""}
+							borderRight={sm ? "" : "1px solid rgba(255, 255, 255, 0.15)"}
 							sx={{
 								cursor: "pointer",
 								transition: "background-color 0.3s ease",
@@ -70,13 +73,14 @@ function Header({ data, handleLinkClick}) {
 						</Box>
 						<Box
 							variant="button"
-							width={"33.33%"}
+							width={sm ? "100%" : "33.33%"}
 							onClick={() => handleLinkClick("clicksEmail")}
 							p={3}
 							display={"flex"}
 							justifyContent={"center"}
 							alignItems={"center"}
-							borderRight={"1px solid rgba(255, 255, 255, 0.15)"}
+							borderBottom={sm ? "1px solid rgba(255, 255, 255, 0.15)" : ""}
+							borderRight={sm ? "" : "1px solid rgba(255, 255, 255, 0.15)"}
 							sx={{
 								cursor: "pointer",
 								transition: "background-color 0.3s ease",
@@ -92,7 +96,7 @@ function Header({ data, handleLinkClick}) {
 						</Box>
 						<Box
 							variant="button"
-							width={"33.33%"}
+							width={sm ? "100%" : "33.33%"}
 							onClick={() => handleLinkClick("clicksWebsite")}
 							p={3}
 							display={"flex"}

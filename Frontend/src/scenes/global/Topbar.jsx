@@ -10,8 +10,8 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
+    sessionStorage.clear();
+    localStorage.clear();
     window.location.reload();
   }
 
