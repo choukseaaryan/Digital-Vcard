@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { tokens } from "../../theme";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -15,6 +15,8 @@ const Dashboard = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const [clickCounts, setClickCounts] = useState({});
+	const sm = useMediaQuery(theme.breakpoints.down("sm"));
+	const md = useMediaQuery(theme.breakpoints.down("md"));
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -51,7 +53,7 @@ const Dashboard = () => {
 			>
 				{/* ROW 1 */}
 				<Box
-					gridColumn="span 3"
+					gridColumn={sm ? "span 12" : md ? "span 6" : "span 3"}
 					backgroundColor={colors.primary[400]}
 					display="flex"
 					alignItems="center"
@@ -72,7 +74,7 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn="span 3"
+					gridColumn={sm ? "span 12" : md ? "span 6" : "span 3"}
 					backgroundColor={colors.primary[400]}
 					display="flex"
 					alignItems="center"
@@ -93,7 +95,7 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn="span 3"
+					gridColumn={sm ? "span 12" : md ? "span 6" : "span 3"}
 					backgroundColor={colors.primary[400]}
 					display="flex"
 					alignItems="center"
@@ -114,7 +116,7 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn="span 3"
+					gridColumn={sm ? "span 12" : md ? "span 6" : "span 3"}
 					backgroundColor={colors.primary[400]}
 					display="flex"
 					alignItems="center"
@@ -137,7 +139,7 @@ const Dashboard = () => {
 
 				{/* ROW 2 */}
 				<Box
-					gridColumn="span 6"
+					gridColumn={md ? "span 12" : "span 6"}
 					gridRow="span 2"
 					backgroundColor={colors.primary[400]}
 					sx={{ borderRadius: "5px" }}
@@ -165,7 +167,7 @@ const Dashboard = () => {
 				</Box>
 
 				<Box
-					gridColumn="span 6"
+					gridColumn={md ? "span 12" : "span 6"}
 					gridRow="span 2"
 					backgroundColor={colors.primary[400]}
 					sx={{ borderRadius: "5px" }}

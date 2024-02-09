@@ -5,7 +5,7 @@ import MakeProtectedApiCall from "../utils/api";
 import PageLoader from "./PageLoader";
 
 const MyLineChart = ({ isDashboard = false }) => {
-	const [data, setData] = useState(null);
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -16,10 +16,7 @@ const MyLineChart = ({ isDashboard = false }) => {
 				"get"
 			);
 			if (response.status === 200) {
-				setData(() => {
-					// eslint-disable-next-line
-					return response.data.data == [] ? null : response.data.data;
-				});
+				setData(response.data.data);
 			}
 			setLoading(false);
 		};
@@ -30,7 +27,7 @@ const MyLineChart = ({ isDashboard = false }) => {
 	return (
 		<>
 			{loading && <PageLoader />}
-			{!data ? (
+			{data.length === 0 ? (
 				<Box
 					display={"flex"}
 					justifyContent={"center"}

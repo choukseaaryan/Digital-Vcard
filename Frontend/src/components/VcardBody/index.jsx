@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import Phone from "@mui/icons-material/Phone";
 import Email from "@mui/icons-material/Email";
 import Work from "@mui/icons-material/Work";
@@ -7,16 +7,19 @@ import Language from "@mui/icons-material/Language";
 import MainModal from "../Modals/MainModal";
 
 function Body({ data, handleLinkClick, setLoading }) {
+	const md = useMediaQuery("(max-width: 768px)");
+	const sm = useMediaQuery("(max-width: 425px)");
+
 	return data ? (
 		<Box
 			m={0}
 			alignItems={"center"}
-			p={"0 25% 0 25%"}
-			height={"100vh"}
+			p={md ? "0" : "0 25% 60px 25%"}
 			color={"#000"}
 		>
 			<Box
-				p={"0 45px 40px"}
+				mb={5}
+				p={sm ? 0 : "0 45px 40px"}
 				boxShadow={"0 0 40px 7px rgba(0, 0, 0, 0.08)"}
 			>
 				<Box
@@ -28,7 +31,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"center"}
-						p={5}
+						p={sm ? "50px 20px" : 5}
 					>
 						<Phone />
 					</Box>
@@ -55,7 +58,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"center"}
-						p={5}
+						p={sm ? "50px 20px" : 5}
 					>
 						<Email />
 					</Box>
@@ -82,7 +85,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"center"}
-						p={5}
+						p={sm ? "50px 20px" : 5}
 					>
 						<Work />
 					</Box>
@@ -103,7 +106,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"center"}
-						p={5}
+						p={sm ? "50px 20px" : 5}
 					>
 						<LocationOn />
 					</Box>
@@ -124,7 +127,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"center"}
-						p={5}
+						p={sm ? "50px 20px" : 5}
 					>
 						<Language />
 					</Box>
