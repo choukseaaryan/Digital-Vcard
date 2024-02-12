@@ -54,7 +54,7 @@ const MyBarChart = ({ isDashboard = false }) => {
 						},
 					]}
 					slotProps={{
-						legend: { hidden: "false" },
+						legend: { hidden: true },
 					}}
 				/>
 			)}

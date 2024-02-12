@@ -32,7 +32,7 @@ const login = async (req, res) => {
 		adminData = {
 			...adminData,
 			token: jwt.sign({ id: adminData._id }, jwtSecret, {
-				expiresIn: "10h",
+				expiresIn: "2h",
 			}),
 		};
 

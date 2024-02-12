@@ -115,7 +115,7 @@ function Body({ data, handleLinkClick, setLoading }) {
 							Address
 						</Typography>
 						<Typography variant="h5">
-							{data.address}
+							{data.address1}, {data.address2}
 							<br />
 							{data.city}, {data.state} {data.zipCode}
 						</Typography>

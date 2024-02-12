@@ -11,7 +11,7 @@ N:${values.lastName};${values.firstName};;;
 FN:${values.firstName} ${values.lastName}
 ORG:${values.company}
 TITLE:${values.position}
-ADR;TYPE=WORK:;;${values.address};${values.city};${values.state};${values.zipCode};;
+ADR;TYPE=WORK:;;${values.address1} ${values.address2};${values.city};${values.state};${values.zipCode};;
 TEL;TYPE=WORK:${values.contact}
 EMAIL;TYPE=WORK:${values.email}
 URL:${values.website}

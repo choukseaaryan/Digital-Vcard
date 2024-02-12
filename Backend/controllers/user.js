@@ -24,11 +24,6 @@ const createUser = async (req, res) => {
 			position,
 		} = req.body;
 
-		const file = {
-			type: req.file.mimetype,
-			buffer: req.file.buffer,
-		};
-
 		const adminId = req.decoded.id;
 
 		const existingUser = await userModel.findOne({
@@ -47,7 +42,8 @@ const createUser = async (req, res) => {
 			adminId,
 			firstName,
 			lastName,
-			address: `${address1} ${address2}`,
+			address1,
+			address2,
 			contact,
 			email,
 			employeeId,
@@ -66,21 +62,34 @@ const createUser = async (req, res) => {
 			});
 		}
 
-		const profileUrl = await uploadFile({
-			file,
-			adminId,
-			userId: newUser._id,
-			location: "profiles",
-		});
+		if (req.file) {
+			const file = {
+				type: req.file.mimetype,
+				buffer: req.file.buffer,
+			};
+			const profileUrl = await uploadFile({
+				file,
+				adminId,
+				userId: newUser._id,
+				location: "profiles",
+			});
 
-		newUser.profileUrl = profileUrl;
+			if (!profileUrl) {
+				return response.error({
+					res,
+					msg: "User created but failed to upload profile picture",
+				});
+			}
+
+			newUser.profileUrl = profileUrl;
+		}
 
 		const vcfUrls = await generateQRCodeAndVCF(newUser);
 
-		if (!profileUrl && !vcfUrls) {
+		if (!vcfUrls) {
 			return response.error({
 				res,
-				msg: "User created but failed to upload file and generate QR code",
+				msg: "User created but failed to generate QR code",
 			});
 		}
 
@@ -112,28 +121,115 @@ const createUser = async (req, res) => {
 	}
 };
 
-const getAllUsers = async (req, res) => {
+const updateUser = async (req, res) => {
 	try {
+		const { id } = req.params;
 		const adminId = req.decoded.id;
-		const users = await userModel.find({ adminId });
 
-		if (!users) {
+		const user = await userModel.findById(id);
+
+		if (!user) {
 			return response.error({
 				res,
-				msg: "No users found.",
-				data: [],
+				msg: "User not found",
 			});
 		}
 
-		users.sort((a, b) => a.employeeId.localeCompare(b.employeeId));
+		const {
+			firstName,
+			lastName,
+			email,
+			contact,
+			address1,
+			address2,
+			city,
+			state,
+			zipCode,
+			website,
+			company,
+			employeeId,
+			position,
+		} = req.body;
+
+		const updatedUser = await userModel.findByIdAndUpdate(
+			id,
+			{
+				firstName,
+				lastName,
+				email,
+				contact,
+				address1,
+				address2,
+				city,
+				state,
+				zipCode,
+				website,
+				company,
+				employeeId,
+				position,
+			},
+			{ new: true }
+		);
+
+		if (!updatedUser) {
+			return response.error({
+				res,
+				msg: "Failed to update user. Please try again later",
+			});
+		}
+
+		if (req.file) {
+			const file = {
+				type: req.file.mimetype,
+				buffer: req.file.buffer,
+			};
+			const profileUrl = await uploadFile({
+				file,
+				adminId,
+				userId: updatedUser._id,
+				location: "profiles",
+			});
+
+			updatedUser.profileUrl = profileUrl;
+		}
+
+		const vcfUrls = await generateQRCodeAndVCF(updatedUser);
+
+		if (!vcfUrls) {
+			return response.error({
+				res,
+				msg: "User updated but failed to generate QR code",
+			});
+		}
+
+		updatedUser.vcfUrl = vcfUrls.vcfUrl;
+		await updatedUser.save();
+
+		const qrCode = await qrCodeModel.findOneAndUpdate(
+			{ userId: updatedUser._id },
+			{
+				adminId,
+				userId: updatedUser._id,
+				employeeId,
+				qrCodeUrl: vcfUrls.qrCodeUrl,
+			},
+			{ new: true }
+		);
+
+		if (!qrCode) {
+			return response.error({
+				res,
+				msg: "User updated but failed to update QR Code",
+			});
+		}
 
 		return response.success({
 			res,
-			msg: "Users fetched successfully",
-			data: users,
+			msg: "User updated successfully",
+			data: updatedUser,
 		});
 	} catch (error) {
-		console.error("Error fetching users:", error);
+		console.error("Error updating user:", error);
 		handleException(res, error);
 	}
 };
@@ -190,6 +286,41 @@ const deleteUser = async (req, res) => {
 	}
 };
 
+const getAllUsers = async (req, res) => {
+	try {
+		const adminId = req.decoded.id;
+		const { userId } = req.query;
+
+		let users;
+		if (userId) {
+			users = await userModel.findById(userId);
+		} else {
+			users = await userModel.find({ adminId });
+		}
+
+		if (!users) {
+			return response.error({
+				res,
+				msg: "No users found.",
+				data: [],
+			});
+		}
+
+		if (Array.isArray(users)) {
+			users.sort((a, b) => a.employeeId.localeCompare(b.employeeId));
+		}
+
+		return response.success({
+			res,
+			msg: "Users fetched successfully",
+			data: users,
+		});
+	} catch (error) {
+		console.error("Error fetching users:", error);
+		handleException(res, error);
+	}
+};
+
 const getOneUser = async (req, res) => {
 	try {
 		const { employeeId, company } = req.params;
@@ -215,7 +346,8 @@ const getOneUser = async (req, res) => {
 
 module.exports = {
 	createUser,
-	getAllUsers,
+	updateUser,
 	deleteUser,
+	getAllUsers,
 	getOneUser,
 };

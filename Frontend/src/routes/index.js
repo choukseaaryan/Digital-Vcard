@@ -3,9 +3,10 @@ import Login from "../scenes/login";
 import Signup from "../scenes/signup";
 import Dashboard from "../scenes/dashboard";
 import QrCode from "../scenes/qrCode";
-import Contacts from "../scenes/contacts";
+import User from "../scenes/user";
 import Bar from "../scenes/bar";
-import Form from "../scenes/form";
+import CreateUser from "../scenes/createUser";
+import EditUser from "../scenes/editUser";
 import Line from "../scenes/line";
 import ErrorPage404 from "../scenes/Error404";
 import Main from "./main";
@@ -20,9 +21,10 @@ const Routing = () => {
 			<Route path="/vcard/:company/:empId" element={<VCard />} />
 			<Route path="/" element={<Main />}>
 				<Route path="/" element={<Dashboard />} />
-				<Route path="/contacts" element={<Contacts />} />
+				<Route path="/user" element={<User />} />
 				<Route path="/qrCode" element={<QrCode />} />
-				<Route path="/form" element={<Form />} />
+				<Route path="/createUser" element={<CreateUser />} />
+				<Route path="/edit/:userId" element={<EditUser />} />
 				<Route path="/bar" element={<Bar />} />
 				<Route path="/line" element={<Line />} />
 			</Route>
