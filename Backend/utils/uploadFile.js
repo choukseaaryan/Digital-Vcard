@@ -35,11 +35,8 @@ const uploadFile = async ({ file, adminId, userId, location }) => {
 
 		const fileName = `${location}/${adminId}/${userId}`;
 		const storageRef = ref(storageFB, fileName);
-		const metadata = {
-			contentType: contentType,
-		};
 
-		await uploadBytesResumable(storageRef, fileBuffer, metadata);
+		await uploadBytesResumable(storageRef, fileBuffer, { contentType });
 		const downloadURL = await getDownloadURL(storageRef);
 
 		return downloadURL;

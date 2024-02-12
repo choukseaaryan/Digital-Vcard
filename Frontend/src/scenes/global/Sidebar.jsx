@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -33,7 +33,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const md = useMediaQuery(theme.breakpoints.down("md"))
+
+  const [isCollapsed, setIsCollapsed] = useState(md);
   const [selected, setActiveTab] = useState(sessionStorage.getItem("selected") || "Dashboard");
 
   const setSelected = (title) => {
@@ -107,7 +109,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Users"
-              to="/contacts"
+              to="/user"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -129,7 +131,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Create User"
-              to="/form"
+              to="/createUser"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

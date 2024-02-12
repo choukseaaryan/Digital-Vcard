@@ -3,7 +3,7 @@ const path = require("path");
 
 const uploadMultiple = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   }
@@ -11,7 +11,7 @@ const uploadMultiple = multer({
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: async function (req, file, cb) {
   checkFileType(file, cb);
   }

@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -8,7 +9,6 @@ import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import MakeProtectedApiCall from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
-import { toast } from "react-toastify";
 
 const Form = () => {
 	const [selectedImage, setSelectedImage] = useState(null);
@@ -24,11 +24,6 @@ const Form = () => {
 	const handleFormSubmit = async (values, { resetForm }) => {
 		setLoading(true);
 
-		if (!selectedImage) {
-			toast.error("Please upload an image");
-			setLoading(false);
-			return;
-		}
 		const formData = new FormData();
 		formData.append("firstName", values.firstName);
 		formData.append("lastName", values.lastName);
@@ -377,18 +372,34 @@ const Form = () => {
 										<Box>
 											{selectedImage && (
 												<Box
-													gridColumn="span 4"
+												width={"100%"}
+												pl={2}
+												display={"flex"}
+												alignItems={"center"}
+											>
+												<Typography
+													variant="body1"
+													color="textSecondary"
+												>
+													Selected Image:{" "}
+													{selectedImage.name}
+												</Typography>
+												<Box
+													variant="button"
+													ml={2}
+													onClick={() =>
+														setSelectedImage(null)
+													}
 													sx={{
-														pl: "10px",
+														cursor: "pointer",
+														color: colors.grey[300],
+														'&:hover': {
+															color: colors.redAccent[400]
+														}
 													}}
 												>
-													<Typography
-														variant="body1"
-														color="textSecondary"
-													>
-														Selected Image:{" "}
-														{selectedImage.name}
-													</Typography>
+													<DeleteIcon />
+												</Box>
 												</Box>
 											)}
 										</Box>

@@ -44,6 +44,7 @@ const MakeProtectedApiCall = async (apiPath, method, bodyData = {}, header) => {
 				toast.clearWaitingQueue();
 				if (error.response?.status === 401) {
 					localStorage.clear();
+					sessionStorage.clear();
 					window.location.href = "/login";
 				}
 				return { status: error.response?.status };
@@ -62,6 +63,7 @@ const MakeProtectedApiCall = async (apiPath, method, bodyData = {}, header) => {
 				}
 				if (error.response?.status === 401) {
 					localStorage.clear();
+					sessionStorage.clear();
 					window.location.href = "/login";
 				}
 				AlertError(msg);
@@ -80,6 +82,7 @@ const MakeProtectedApiCall = async (apiPath, method, bodyData = {}, header) => {
 				toast.clearWaitingQueue();
 				if (error.response?.status === 401) {
 					localStorage.clear();
+					sessionStorage.clear();
 					window.location.href = "/login";
 				}
 				return { status: error.response?.status };
@@ -96,6 +99,7 @@ const MakeProtectedApiCall = async (apiPath, method, bodyData = {}, header) => {
 				toast.clearWaitingQueue();
 				if (error.response?.status === 401) {
 					localStorage.clear();
+					sessionStorage.clear();
 					window.location.href = "/login";
 				}
 				return { status: error.response?.status };
@@ -112,6 +116,7 @@ const MakeProtectedApiCall = async (apiPath, method, bodyData = {}, header) => {
 				toast.clearWaitingQueue();
 				if (error.response?.status === 401) {
 					localStorage.clear();
+					sessionStorage.clear();
 					window.location.href = "/login";
 				}
 				return { status: error.response?.status };
