@@ -139,7 +139,7 @@ const getTotalClicksPerUser = async (req, res) => {
 
 		const totalClicksPerUser = qrCodeData.map((data) => ({
 			employeeId: data.employeeId,
-			totalClicks: data.totalClicks,
+			totalClicks: parseInt(data.totalClicks),
 		}));
 
 		totalClicksPerUser.sort((a, b) => a.employeeId.localeCompare(b.employeeId));

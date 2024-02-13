@@ -6,7 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EmailModal from "./EmailModal";
+import { useMediaQuery } from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
@@ -14,6 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ModalComponent = ({ data, setLoading }) => {
 	const [open, setOpen] = React.useState(false);
+	const md = useMediaQuery("(max-width:600px)");
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -41,23 +44,48 @@ const ModalComponent = ({ data, setLoading }) => {
 		<>
 			<Button
 				onClick={handleClickOpen}
-				sx={{
-					width: "100%",
-					backgroundColor: "#001d6e",
-					color: "#fee2c5",
-					borderRadius: "5px",
-					fontSize: "20px",
-					margin: "20px 0",
-					boxShadow:
-						"0px 10px 14.1px 0.9px rgba(0, 0, 0, 0.24), 0px 4px 19.6px 0.4px rgba(0, 0, 0, 0.16)",
-					"&:hover": {
-						backgroundColor: "#001d6e",
-						boxShadow:
-							"0px 20px 28.2px 0.9px rgba(0, 0, 0, 0.24), 0px 8px 40.18px 0.82px rgba(0, 0, 0, 0.16)",
-					},
-				}}
+				sx={
+					md
+						? {
+								position: "fixed",
+								bottom: "20px",
+								right: "20px",
+								backgroundColor: "#001d6e",
+								color: "#fee2c5",
+								borderRadius: "50px",
+								padding: "10px 20px",
+								fontSize: "16px",
+								boxShadow:
+									"0px 10px 14.1px 0.9px rgba(0, 0, 0, 0.24), 0px 4px 19.6px 0.4px rgba(0, 0, 0, 0.16)",
+								"&:hover": {
+									backgroundColor: "#001d6e",
+									boxShadow:
+										"0px 20px 28.2px 0.9px rgba(0, 0, 0, 0.24), 0px 8px 40.18px 0.82px rgba(0, 0, 0, 0.16)",
+								},
+						}
+						: {
+								width: "100%",
+								backgroundColor: "#001d6e",
+								color: "#fee2c5",
+								borderRadius: "5px",
+								fontSize: "20px",
+								margin: "20px 0",
+								boxShadow:
+									"0px 10px 14.1px 0.9px rgba(0, 0, 0, 0.24), 0px 4px 19.6px 0.4px rgba(0, 0, 0, 0.16)",
+								"&:hover": {
+									backgroundColor: "#001d6e",
+									boxShadow:
+										"0px 20px 28.2px 0.9px rgba(0, 0, 0, 0.24), 0px 8px 40.18px 0.82px rgba(0, 0, 0, 0.16)",
+								},
+							}
+				}
 			>
-				Dowload VCard
+				{md ? "Save to Contacts" : "Dowload VCard"}
+				{md && <PersonAddIcon
+					sx={{
+						fontSize: "20px",
+						marginLeft: "10px",
+					}} />}
 			</Button>
 			<Dialog
 				open={open}
