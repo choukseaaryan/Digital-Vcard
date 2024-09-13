@@ -321,7 +321,29 @@ const getAllUsers = async (req, res) => {
 	}
 };
 
-const getOneUser = async (req, res) => {
+const getUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await userModel.findById(id);
+    if (!user) {
+      return response.error({
+        res,
+        msg: "User not found",
+      });
+    }
+
+    return response.success({
+      res,
+      msg: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    handleException(res, error);
+  }
+};
+
+const getUserByCompany = async (req, res) => {
 	try {
 		const { employeeId, company } = req.params;
 		const user = await userModel.findOne({ employeeId, company });
@@ -349,5 +371,6 @@ module.exports = {
 	updateUser,
 	deleteUser,
 	getAllUsers,
-	getOneUser,
+	getUserById,
+	getUserByCompany
 };

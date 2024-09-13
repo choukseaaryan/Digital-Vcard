@@ -7,7 +7,7 @@ import MakeProtectedApiCall from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 
 const VCard = () => {
-	const { company, empId } = useParams();
+	const { userId } = useParams();
 
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const VCard = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const url = `get-user/${company}/${empId}`;
+			const url = `get-user-by-id/${userId}`;
 			const response = await MakeProtectedApiCall(url, "get");
 			if (response.status === 200) {
 				setData(response.data.data);
@@ -23,7 +23,7 @@ const VCard = () => {
 			setLoading(false);
 		};
 		fetchData();
-	}, [empId, company]);
+	}, [userId]);
 
 	const handleLinkClick = async (key) => {
 		const response = await MakeProtectedApiCall("update-qr-code", "post", {

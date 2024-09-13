@@ -18,7 +18,7 @@ const Routing = () => {
 			<Route path="*" element={<ErrorPage404 />} />
 			<Route path="/login" element={<Login />} />
 			<Route path="/signup" element={<Signup />} />
-			<Route path="/vcard/:company/:empId" element={<VCard />} />
+			<Route path="/vcard/:userId" element={<VCard />} />
 			<Route path="/" element={<Main />}>
 				<Route path="/" element={<Dashboard />} />
 				<Route path="/user" element={<User />} />

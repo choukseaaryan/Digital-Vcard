@@ -9,6 +9,7 @@ import Slide from "@mui/material/Slide";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import MakeProtectedApiCall from "../../utils/api";
@@ -115,7 +116,7 @@ const Contacts = () => {
 				>
 					<Link
 						style={{
-							marginRight: "15px",
+							marginRight: "10px",
 							color: colors.grey[100],
 							transition: "all 0.3s",
 						}}
@@ -132,6 +133,7 @@ const Contacts = () => {
 					</Link>
 					<Box
 						sx={{
+							marginRight: "10px",
 							color: colors.grey[100],
 							transition: "all 0.3s",
 							"&:hover": {
@@ -144,6 +146,21 @@ const Contacts = () => {
 						}}
 					>
 						<DeleteIcon />
+					</Box>
+					<Box
+						sx={{
+							color: colors.grey[100],
+							transition: "all 0.3s",
+							"&:hover": {
+								color: colors.blueAccent[500],
+							},
+						}}
+						onClick={() => {
+							const url = window.location.origin + "/vcard/" + params.row._id;
+							window.open(url, "_blank", "noopener,noreferrer");
+						}}
+					>
+						<OpenInNewRoundedIcon />
 					</Box>
 				</Box>
 			),
