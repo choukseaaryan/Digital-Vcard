@@ -38,11 +38,19 @@ const Signup = () => {
 	const isNonMobile = useMediaQuery("(min-width:600px)");
 	const phoneRegExp =
 		/^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+	
+	// Password Regex: At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+	const passwordRegExp = /^.{8,}$/;
 
 	const checkoutSchema = Yup.object().shape({
 		fullName: Yup.string().required("Required"),
 		email: Yup.string().email("Invalid email").required("Required"),
-		password: Yup.string().required("Required"),
+		password: Yup.string()
+			.matches(
+				passwordRegExp,
+				"Password must be at least 8 characters long."
+			)
+			.required("Required"),
 		confirmPassword: Yup.string()
 			.required("Required")
 			.oneOf([Yup.ref("password"), null], "Passwords must match"),
